@@ -1,0 +1,41 @@
+create table if not exists Character(
+      characterId text not null ,
+      characterName text not null ,
+      characterDescribe text not null ,
+      characterNumericalRange text ,
+      abnormal text ,
+      growthPeriod text ,
+      stateOfExpression text ,
+      picturePath text
+      );
+create table if not exists AbnormalCharacters(
+            characterId text not null ,
+            characterName text not null ,
+            characterDescribe text not null ,
+            characterNumericalRange text ,
+            growthPeriod text ,
+            stateOfExpression text ,
+            picturePath text
+            );
+
+create table if not exists Varieties(
+                        VarietiesId text not null ,
+                        VarietiesName text not null ,
+                        VarietiesList text not null
+                        );
+create table if not exists Task(
+                        TaskName text not null ,
+                        TaskTotal text not null ,
+                        UnfinishedTotal text ,
+                        TestNumbe text ,
+                        growthPeriod text
+                        );
+create table if not exists TestDetails(
+                         TestNumber text not null ,
+                         TotalNumberOfCharacters text not null ,
+                         HaveBenCollected text ,
+                         NotCollected text ,
+                         Uploaded text ,
+                         NotUploaded text not null ,
+                         ListOfCharacters text
+                        );

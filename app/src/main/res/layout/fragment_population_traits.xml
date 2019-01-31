@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="#ffffff"
+    android:orientation="vertical">
+    <View
+        android:layout_marginRight="75dp"
+        android:layout_width="152dp"
+        android:layout_height="1dp"
+        android:background="#cccccc"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:background="#F2F2F2"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="51dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tv_sdwd"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:text="测试编号\\性状名称" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="51dp"
+            android:background="#cccccc" />
+
+        <LinearLayout
+            android:id="@+id/lin_header_content"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <com.pdwy.dus.collection.core.SyncHorizontalScrollView
+                android:id="@+id/header_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/lin_year_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+            </com.pdwy.dus.collection.core.SyncHorizontalScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="152dp"
+        android:layout_height="1dp"
+        android:background="#cccccc"/>
+
+    <ScrollView
+        android:id="@+id/scroll_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal">
+
+            <com.pdwy.dus.collection.core.NoscrollListView
+                android:id="@+id/lv_left"
+                android:layout_width="151dp"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="#cccccc" />
+
+            <LinearLayout
+                android:id="@+id/lin_data_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.pdwy.dus.collection.core.SyncHorizontalScrollView
+                    android:id="@+id/data_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <com.pdwy.dus.collection.core.NoscrollListView
+                        android:id="@+id/lv_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="none" />
+                </com.pdwy.dus.collection.core.SyncHorizontalScrollView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

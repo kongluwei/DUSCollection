@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pdwy.dus.collection">
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!--在SDCard中创建与删除文件权限  -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <!-- 往SDCard写入数据权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--  从SDCard读取数据权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="landscape"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--登录页面 landscape横屏显示-->
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--设置地址页面 landscape横屏显示-->
+        <activity android:name=".activity.shezidiziActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--二维码页面-->
+        <activity android:name=".activity.QRCodeManualActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--采集设置页面-->
+        <activity android:name=".activity.CollectionSettingActivity"
+            android:screenOrientation="landscape"
+            />
+
+        <!--选择性状页面-->
+        <activity android:name=".activity.CrashActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--扫描二维码页面-->
+        <activity android:name=".activity.QRCodeActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--采集管理页面-->
+        <activity android:name=".activity.CollectionManagementActivity"
+            android:screenOrientation="landscape"
+            />
+
+        <!--自定义采集管理页面-->
+        <activity android:name=".activity.CustomCollectionManagementActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--数据详情页面-->
+        <activity android:name=".activity.DataDetailsActivity"
+            android:screenOrientation="landscape"
+            />
+
+        <!--群体异常数据详情页面-->
+        <activity android:name=".activity.YiChangDataDetailsActivity"
+            android:screenOrientation="landscape"
+            />
+
+        <!--个体异常数据详情页面-->
+        <activity android:name=".activity.SYiChangDataDetailsActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--个人中心页面-->
+        <activity android:name=".activity.PersonalCenterActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--密码修改-->
+        <activity android:name=".activity.PasswordActivity"
+            android:screenOrientation="landscape"
+            />
+
+        <!--阈值管理-->
+        <activity android:name=".activity.ThresholdManagementActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--阈值设置-->
+        <activity android:name=".activity.ThresholdSettingActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--版本信息-->
+        <activity android:name=".activity.VersionInformationActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--功能介绍-->
+        <activity android:name=".activity.FunctionalIntroductionActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--拍照-->
+        <activity android:name=".activity.PhotographActivity"
+            android:screenOrientation="landscape"
+            />
+        <!--照片查看-->
+        <activity android:name=".activity.PhotoViewActivity"
+            android:screenOrientation="landscape"
+            />
+
+        <!--excel页面-->
+        <activity android:name=".core.ExcelListActivity"
+            android:screenOrientation="landscape"
+            />
+
+    </application>
+
+
+</manifest>

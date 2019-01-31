@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:background="#cccccc"
+        android:layout_width="70dp"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="70dp"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/tv_xh"
+            android:gravity="center"
+            android:text="1"
+            android:layout_width="69dp"
+            android:layout_height="50dp" />
+        <View
+            android:background="#cccccc"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <View
+        android:background="#cccccc"
+        android:layout_width="70dp"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="70dp"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_dmz"
+            android:layout_width="69dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="代码值" />
+        <View
+            android:background="#cccccc"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <View
+        android:background="#cccccc"
+        android:layout_width="70dp"
+        android:layout_height="1dp"/>
+</LinearLayout>

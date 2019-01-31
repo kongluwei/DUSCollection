@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+<include android:id="@+id/include_qrcode" layout="@layout/head_include_layout"/>
+    <LinearLayout
+        android:focusable="true"      android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+     <EditText
+         android:id="@+id/et_qr_code_number"
+         android:layout_width="300dp"
+         android:layout_height="50dp"
+         android:gravity="center"
+         android:hint="手动输入田间测试编号"
+         android:background="@drawable/shape_square_label_edittext"
+         />
+      <TextView
+android:id="@+id/tv_qr_code_number"
+          android:layout_width="300dp"
+          android:layout_height="50dp"
+          android:layout_marginTop="30dp"
+          android:background="@drawable/ic_launcher_background"
+          android:text="确定"
+          android:gravity="center"
+          android:textSize="25dp"
+          android:textColor="#fff"
+          />
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:id="@+id/ll__qr_code_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/icon_scan"
+                />
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击扫描采集"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include  layout="@layout/head_include_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+<LinearLayout
+    android:id="@+id/ll_xzsyq_syq"
+    android:paddingRight="200dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:background="#DBDBDB"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+</LinearLayout>
+    </ScrollView>
+    <TextView
+        android:id="@+id/tv_queren"
+        android:background="@drawable/shape_small_label_signin_"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:text="确认"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_width="150dp"
+        android:layout_height="40dp" />
+</LinearLayout>

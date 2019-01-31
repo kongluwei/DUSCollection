@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#E6E6E6"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+     <ImageView
+         android:id="@+id/iv_xztp"
+         android:background="@mipmap/logo"
+         android:layout_width="80dp"
+         android:layout_height="80dp" />
+        <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/tv_xzmc"
+            android:text="性状名称"
+            android:textSize="25sp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp" />
+    </LinearLayout>
+    <View
+        android:background="#EEEEEE"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_sc_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<LinearLayout
+
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="20dp">
+<TextView
+    android:text="表达状态"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="match_parent" />
+    <View
+        android:background="#EEEEEE"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:text="代码"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+</LinearLayout>
+            
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>

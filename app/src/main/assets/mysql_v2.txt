@@ -1,0 +1,82 @@
+create table if not exists User(
+      userId text not null ,
+      userName text not null ,
+      userPassword text not null ,
+      identityLevel text ,
+      headAddress text
+      );
+create table if not exists Character(
+            characterId text not null ,
+            characterName text not null ,
+            varieties text not null ,
+             groupId text ,
+             varietyId text ,
+            experimentalNumber text ,
+            template text ,
+            testNumber text ,
+            growthPeriod text ,
+            growthPeriodTime text ,
+            observationMethod text ,
+            fillInTheState text ,
+            observationalQuantity text ,
+            dataUnit text ,
+            duplicateContent1 text ,
+            duplicateContent2 text ,
+            duplicateContent3 text ,
+            numericalRangeOfCharacters text ,
+            normalPicture text ,
+            abnormalPicture text ,
+            codeDescription text ,
+            codeValue text ,
+            abnormal text ,
+            abnormalContent text ,
+            pictureName text
+            );
+create table if not exists Picture(
+                        groupId text ,
+                        varietyId text ,
+                        characterId text,
+                        pictureName text not null ,
+                        testNumber text ,
+                        experimentalNumber text  ,
+                        stateOfExpression text ,
+                        varieties text  ,
+                        pictureTime text  ,
+                        characterName text  ,
+                        pictureAddress text  ,
+                        whetherOrNotToUpload text
+                        );
+create table if not exists CharacterThreshold(
+                        characterId text ,
+                        characterName text ,
+                        varieties text ,
+                        observationMethod text  ,
+                        template text ,
+                        numericalRangeOfCharacters text
+                        );
+                        create table if not exists Template(
+                                                templateName text ,
+                                                varieties text ,
+                                                containGrowthPeriod text ,
+                                                growthPeriodTime text  ,
+                                                containCharacter text
+                                                );
+                     create table if not exists BirthCycle(
+                                                subcentergroupId text ,
+                                                id text ,
+                                                serialnum text ,
+                                                remarks text ,
+                                                standardcode text ,
+                                                starttime text ,
+                                                endtime text ,
+                                                sortcharcode text  ,
+                                                name text
+                                                );
+                      create table if not exists CollectionTemplate(
+                                                 subcentergroupId text ,
+                                                 id text ,
+                                                 collectiontemplatename text ,
+                                                 guideedition text ,
+                                                 characternum text  ,
+                                                 characterlist text
+                                                 );

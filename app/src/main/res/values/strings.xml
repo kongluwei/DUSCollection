@@ -1,0 +1,16 @@
+<resources>
+    <!--APP name-->
+    <string name="app_name">DUS采集</string>
+
+    <!--用户信息-->
+    <string name="user_name">USER_NAME</string>
+    <string name="user_pwd">USER_PWD</string>
+    <string name="user_id">USER_ID</string>
+    <string name="user_time">USER_TIME</string>
+    <string name="login_time">LOGIN_TIME</string>
+    <!--数据库名称-->
+    <string name="db_name">DUS_caiji.db</string>
+
+    <!--EventBus的消息P-->
+    <string name="gtxzgb">gtxzgb</string>
+</resources>

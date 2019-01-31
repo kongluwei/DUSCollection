@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:background="#334053"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <LinearLayout
+            android:id="@+id/ll_shouye"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/head_icon_home"
+                />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="首页"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="照片管理" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_geren"
+            android:paddingRight="20dp"
+            android:gravity="right|center_vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/head_icon_user"
+                />
+            <TextView
+
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="个人中心"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <EditText
+                android:id="@+id/et_search"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/frame_textview"
+                />
+            <LinearLayout
+                android:id="@+id/layout_default"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <ImageView
+
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@mipmap/icon_search"
+                    />
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="搜索"
+
+                    />
+            </LinearLayout>
+        </FrameLayout>
+        <View
+            android:layout_marginTop="10dp"
+            android:background="#E6E6E6"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="#F2F2F2"
+            android:layout_width="match_parent"
+            android:layout_height="55dp">
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="match_parent" />
+
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="照片名称" />
+
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="测试编号" />
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="实验编号" />
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="表达状态" />
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="作物" />
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="拍摄时间" />
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="上传" />
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="性状名称" />
+            <View
+                android:background="#E6E6E6"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+        <View
+            android:background="#E6E6E6"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:id="@+id/ll_zpgl_ietm"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:background="#F2F2F2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="70dp">
+            <TextView
+                android:textColor="#fff"
+                android:background="@drawable/shape_small_label_1"
+                android:gravity="center"
+                android:id="@+id/tv_schu"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:text="删除"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="#fff"
+                android:layout_marginLeft="50dp"
+                android:background="@drawable/shape_small_label_1"
+                android:gravity="center"
+                android:id="@+id/tv_schuang"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:text="上传"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
