@@ -406,7 +406,7 @@ if("0".equals(growthPeriodBean.getCode())){
                  }
 
           else {
-                     MLog.e("分组==="+groupingBean.getMsg()+"任务==="+taskBean.getMsg()+"性状==="+characterBean.getMsg());
+                     MLog.e("分组==="+groupingBean.getMsg()+"-------任务==="+taskBean.getMsg()+"------性状==="+characterBean.getMsg());
 
                      Message msg =Message.obtain();
                      msg.obj = "数据请求失败";
