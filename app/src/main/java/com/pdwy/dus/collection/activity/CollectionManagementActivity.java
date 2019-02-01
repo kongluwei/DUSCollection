@@ -98,7 +98,9 @@ public class CollectionManagementActivity extends BaseActivity {
                         }
                     }
                         tv_leibei_p = (TextView) ll_character_category_Choice.getChildAt(0);
-                        setFragment(tv_leibei_p);
+                    tv_leibei_p.setBackgroundColor(getResources().getColor(R.color.home_tead_true));
+
+                    setFragment(tv_leibei_p);
                     break;
             }
         }
@@ -370,8 +372,6 @@ public class CollectionManagementActivity extends BaseActivity {
 
                     CategoryOnClick categoryOnClick=new CategoryOnClick();
 
-                    tv_leibei_p= (TextView) ll_character_category_Choice.getChildAt(0);
-                    tv_leibei_p.setBackgroundColor(getResources().getColor(R.color.home_tead_true));
 
 
                     Message msg1=new Message();
