@@ -648,16 +648,18 @@ public int getCollectionOfVarietiesHangInTheAir(CollectionTaskItemBean collectio
         list=new ArrayList<>();
 
         while (c.moveToNext()) {
-            boolean b=false;
-            for(CharacterThresholdBean s:list){
-                if(c.getString(c.getColumnIndex("characterName")).equals(s.characterName)){
-                    b=true;
-                    break;
-                }
-            }
-            if(b)
-                continue;
 
+            if(p!=0) {
+                boolean b = false;
+                for (CharacterThresholdBean s : list) {
+                    if (c.getString(c.getColumnIndex("characterName")).equals(s.characterName)) {
+                        b = true;
+                        break;
+                    }
+                }
+                if (b)
+                    continue;
+            }
             CharacterThresholdBean characterThresholdBean=new CharacterThresholdBean();
             characterThresholdBean.characterId=c.getString(c.getColumnIndex("characterId"));
             characterThresholdBean.characterName=c.getString(c.getColumnIndex("characterName"));
