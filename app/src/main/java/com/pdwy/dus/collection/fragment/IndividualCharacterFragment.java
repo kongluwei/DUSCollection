@@ -68,7 +68,7 @@ public class IndividualCharacterFragment extends Fragment {
     int iiiiii=0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         inputData=new InputData(getActivity());
-        yuzhi= inputData.getYuZhi(getArguments().getString("mbmc"),getArguments().getString("xz"));
+
         EventBus.getDefault().register(this);
         View v=inflater.inflate(R.layout.excel_list_activity, container, false);
         initView(v);
@@ -103,6 +103,8 @@ public class IndividualCharacterFragment extends Fragment {
         TextView tv_xz=(TextView)getActivity().findViewById(R.id.tv_xz);
         xz= tv_xz.getText().toString();
         MLog.e(xz);
+        yuzhi= inputData.getYuZhi(getArguments().getString("mbmc"),xz);
+        MLog.e("yuzhi====="+yuzhi);
          duplicateContent1List=inputData.getDuplicateContent1(mListData,syrwbh,xz);
 
         mLeft =  v.findViewById(R.id.lv_left);
