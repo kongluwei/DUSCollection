@@ -16,7 +16,7 @@ import com.pdwy.dus.collection.model.bean.PictureBean;
 import com.pdwy.dus.collection.model.bean.QunTiBean;
 import com.pdwy.dus.collection.model.bean.TemplateBean;
 import com.pdwy.dus.collection.utils.MLog;
-import com.pdwy.dus.collection.utils.helper.DateUtil;
+import com.pdwy.dus.collection.utils.DateUtil;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
