@@ -14,6 +14,8 @@ import com.pdwy.dus.collection.model.db.InputData;
 import com.pdwy.dus.collection.utils.MLog;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -69,15 +71,17 @@ public class CrashActivity extends BaseActivity {
          syrwbh=intent.getStringExtra("syrwbh");
         tjbhList=intent.getStringArrayListExtra("tjbhList");
          mbmc=inputData.getTemplate(syrwbh);
-          MLog.e(syrwbh);
-        String [] containGrowthPeriod=inputData.getContainGrowthPeriod(mbmc).split(",");
 
-        for (int i=0;i<containGrowthPeriod.length;i++) {
+          MLog.e(syrwbh);
+        List<String> sortcharcodeList=inputData.getContainGrowthPeriod(inputData.getGroupId(syrwbh));
+        //去重
+        sortcharcodeList = new ArrayList<>(new HashSet<>(sortcharcodeList));
+        for (int i=0;i<sortcharcodeList.size();i++) {
 
             LinearLayout linearLayout = (LinearLayout) LinearLayout.inflate(this, R.layout.activity_crash_ll_item, null);
             TextView tv=(TextView)linearLayout.findViewById(R.id.tv_xzmc);
-            tv.setText(containGrowthPeriod[i]);
-            ArrayList<String> list=inputData.getCharacterList(mbmc,containGrowthPeriod[i],gcfs);
+            tv.setText(sortcharcodeList.get(i));
+            ArrayList<String> list=inputData.getCharacterList(mbmc,sortcharcodeList.get(i),gcfs);
             MLog.e(mbmc+"====="+list.size());
             for (String xzmc:list) {
                 LinearLayout linearLayout2 = (LinearLayout) LinearLayout.inflate(this, R.layout.activity_crash_ll_item_item, null);
