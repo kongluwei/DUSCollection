@@ -110,8 +110,9 @@ public class LoginActivity extends BaseActivity {
                     break;
 
 
-                case 5: //导入数据成功
-
+                case 5: //分组导入数据
+                    // 依据分组id获取生育期
+                    initialDataHttp.initialDataHttp5(String.valueOf(groupingBean.getData().get(p).getId()));
                     p++;
                     showLoadingDialog("导入数据中" + p + "/" + s);
                     if (p < s)
