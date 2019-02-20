@@ -214,7 +214,18 @@ public class CollectionManagementActivity extends BaseActivity {
                         }
                     }
                     else {
-                        listCharacterThresholdBean2 = inputData.getCharacterThresholdBeanlist(getIntent().getStringExtra("pinzhong"), getIntent().getStringExtra("syrwbh"), getIntent().getStringExtra("mbmc"), getIntent().getStringExtra("syq"), 1, null);
+                        listCharacterThresholdBean3 = inputData.getCharacterThresholdBeanlist(getIntent().getStringExtra("pinzhong"), getIntent().getStringExtra("syrwbh"), getIntent().getStringExtra("mbmc"), getIntent().getStringExtra("syq"), 1, null);
+                        listCharacterThresholdBean2=new ArrayList<>();
+                        ArrayList<String> listXzmc=getIntent().getStringArrayListExtra("listXzmc");
+                        for(CharacterThresholdBean c:listCharacterThresholdBean3){
+                            for(String s:listXzmc){
+                                if(s.equals(c.characterName))
+                                    listCharacterThresholdBean2.add(c);
+                                continue;
+                            }
+
+
+                        }
                     }
                     listCharacterThresholdBean=new ArrayList<>();
                     for(CharacterThresholdBean c:listCharacterThresholdBean2){

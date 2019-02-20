@@ -18,6 +18,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pdwy.dus.collection.MainActivity;
 import com.pdwy.dus.collection.R;
 import com.pdwy.dus.collection.activity.CollectionManagementActivity;
@@ -26,7 +28,11 @@ import com.pdwy.dus.collection.activity.PersonalCenterActivity;
 import com.pdwy.dus.collection.core.BaseActivity;
 import com.pdwy.dus.collection.core.BaseFragment;
 import com.pdwy.dus.collection.core.ExcelListActivity;
+import com.pdwy.dus.collection.http.bean.GrowthPeriodBean;
+import com.pdwy.dus.collection.http.bean.TaskBean;
+import com.pdwy.dus.collection.http.bean.TemplateBean;
 import com.pdwy.dus.collection.model.bean.CharacterThresholdBean;
+import com.pdwy.dus.collection.model.bean.CharacterlistBean;
 import com.pdwy.dus.collection.model.bean.CollectionTaskBean;
 import com.pdwy.dus.collection.model.bean.CollectionTaskItemBean;
 import com.pdwy.dus.collection.model.db.InputData;
@@ -34,7 +40,11 @@ import com.pdwy.dus.collection.utils.MLog;
 import com.pdwy.dus.collection.utils.PopupWindowUtils;
 import com.pdwy.dus.collection.utils.ProgressDialogUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collector;
 
 import butterknife.OnClick;
 
@@ -72,6 +82,12 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
     private Dialog waitDialog;
     InputData inputData;
     String[] data = new String[0];
+    //采集模板
+    ArrayList<TemplateBean> listString;
+    //生育期
+    GrowthPeriodBean.DataBean dataBean;
+//性状list
+    List<String> xzList;
     //异常RadioButton
     @Override
     protected int setLayoutResourceID() {
@@ -117,11 +133,37 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
         collectionTaskBean.Varieties=getArguments().getString("pinzhong");
         ArrayList<CollectionTaskItemBean> listCollectionTaskItemBean=inputData.getCollectionTaskItemBeanList(collectionTaskBean,1);
         tv_syrwbh.setText(listCollectionTaskItemBean.get(0).taskName);
-        ArrayList<String> listString =inputData.getMoBan(tv_syrwbh.getText().toString());
-        tv_mbmc.setText(listString.get(0));
-        tv_syq.setText(inputData.getSYQ(getArguments().getString("pinzhong"),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),""));
-        ArrayList<CharacterThresholdBean> listCharacterThresholdBean =inputData.getCharacterThresholdBeanlist(getArguments().getString("pinzhong"),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
-        tv_xz.setText(listCharacterThresholdBean.get(0).characterName);
+        listString =inputData.getCollectionMoBan(tv_syrwbh.getText().toString());
+        tv_mbmc.setText(listString.get(0).getCollectiontemplatename());
+        xzList=new ArrayList<>();
+        dataBean=inputData.getSYQ(getArguments().getString("pinzhong"),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString());
+        if(dataBean!=null) {
+            tv_syq.setText(dataBean.getRemarks());
+
+
+            String collectiontemplatename = listString.get(0).getCharacterlist();
+            Type listType = new TypeToken<LinkedList<CharacterlistBean>>() {
+            }.getType();
+            Gson gson = new Gson();
+            LinkedList<CharacterlistBean> characterlist = gson.fromJson(collectiontemplatename, listType);
+            MLog.e(listString.get(0).getCharacterlist() + "=========" + characterlist.size());
+            String[] sortcharcode = dataBean.getSortcharcode().split(",");
+            MLog.e(dataBean.getSortcharcode() + "=========" + sortcharcode.length);
+            for (CharacterlistBean c : characterlist) {
+
+                for (String s2 : sortcharcode) {
+                    if (c.getStdCharCode().equals(s2)) {
+
+                        xzList.add(c.getName());
+                    }
+                }
+
+            }
+            tv_xz.setText(xzList.get(0));
+        }else {
+            tv_syq.setText("不在时间范围");
+            tv_xz.setText("");
+        }
     }
     private  View getDataView(final View v){
         // 用于PopupWindow的View
@@ -145,10 +187,10 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
                 }
                 break;
             case R.id.ll_pop2:
-                ArrayList<String> listString =inputData.getMoBan(tv_syrwbh.getText().toString());
+                ArrayList<TemplateBean> listString =inputData.getCollectionMoBan(tv_syrwbh.getText().toString());
                 data = new String[listString.size()];
                 for(int i=0;i<listString.size();i++){
-                    data[i]=listString.get(i);
+                    data[i]=listString.get(i).getCollectiontemplatename();
                 }
                 break;
             case R.id.ll_pop3:
@@ -156,10 +198,11 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
                 break;
             case R.id.ll_pop4:
                 ArrayList<CharacterThresholdBean> listCharacterThresholdBean =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
-                data = new String[listCharacterThresholdBean.size()];
-                for(int i=0;i<listCharacterThresholdBean.size();i++){
-                    data[i]=listCharacterThresholdBean.get(i).characterName;
+                data = new String[xzList.size()];
+                for(int i=0;i<xzList.size();i++){
+                    data[i]=xzList.get(i);
                 }
+
                 break;
             case R.id.ll_pop5:
                 data = new String[]{"1", "2", "3"};
@@ -184,36 +227,127 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
                         tv_pop.setText(data1[position]);
                         CollectionTaskBean collectionTaskBean=new CollectionTaskBean();
                         collectionTaskBean.Varieties=tv_pop.getText().toString();
+//                        ArrayList<CollectionTaskItemBean> listCollectionTaskItemBean=inputData.getCollectionTaskItemBeanList(collectionTaskBean,1);
+//                        tv_syrwbh.setText(listCollectionTaskItemBean.get(0).taskName);
+//                        ArrayList<String> listString =inputData.getMoBan(tv_syrwbh.getText().toString());
+//                        tv_mbmc.setText(listString.get(0));
+//                        tv_syq.setText(inputData.getSYQ(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString()).getRemarks());
+//                        ArrayList<CharacterThresholdBean> listCharacterThresholdBean =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
+//                        tv_xz.setText(listCharacterThresholdBean.get(0).characterName);
+
                         ArrayList<CollectionTaskItemBean> listCollectionTaskItemBean=inputData.getCollectionTaskItemBeanList(collectionTaskBean,1);
                         tv_syrwbh.setText(listCollectionTaskItemBean.get(0).taskName);
-                        ArrayList<String> listString =inputData.getMoBan(tv_syrwbh.getText().toString());
-                        tv_mbmc.setText(listString.get(0));
-                        tv_syq.setText(inputData.getSYQ(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),""));
-                        ArrayList<CharacterThresholdBean> listCharacterThresholdBean =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
-                        tv_xz.setText(listCharacterThresholdBean.get(0).characterName);
+
+                        listString =inputData.getCollectionMoBan(tv_syrwbh.getText().toString());
+                        tv_mbmc.setText(listString.get(0).getCollectiontemplatename());
+                        xzList=new ArrayList<>();
+                        dataBean=inputData.getSYQ(getArguments().getString("pinzhong"),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString());
+                        if(dataBean!=null){
+                        tv_syq.setText(dataBean.getRemarks());
 
 
+                        String collectiontemplatename= listString.get(0).getCharacterlist();
+                        Type listType = new TypeToken<LinkedList<CharacterlistBean>>(){}.getType();
+                        Gson gson=new Gson();
+                        LinkedList<CharacterlistBean> characterlist=gson.fromJson(collectiontemplatename, listType);
+                        MLog.e(listString.get(0).getCharacterlist()+"========="+characterlist.size());
+                        String [] sortcharcode= dataBean.getSortcharcode().split(",");
+                        MLog.e(dataBean.getSortcharcode()+"========="+sortcharcode.length);
+                        for(CharacterlistBean c:characterlist){
+
+                            for(String s2:sortcharcode){
+                                if(c.getStdCharCode().equals(s2)){
+
+                                    xzList.add(c.getName());
+                                }
+                            }
+
+                        }
+                        tv_xz.setText(xzList.get(0));
+                }else {
+                    tv_syq.setText("不在时间范围");
+                    tv_xz.setText("");
+                }
 
                         popupWindowUtils.dismiss();
                         break;
                     case R.id.ll_pop1:
                         setTextViewText(v,data1,position);
-                        ArrayList<String> listString1 =inputData.getMoBan(tv_syrwbh.getText().toString());
-                        tv_mbmc.setText(listString1.get(0));
-                        tv_syq.setText(inputData.getSYQ(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),""));
-                        ArrayList<CharacterThresholdBean> listCharacterThresholdBean1 =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
-                        tv_xz.setText(listCharacterThresholdBean1.get(0).characterName);
+//                        ArrayList<String> listString1 =inputData.getMoBan(tv_syrwbh.getText().toString());
+//                        tv_mbmc.setText(listString1.get(0));
+//                        tv_syq.setText(inputData.getSYQ(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString()).getRemarks());
+//                        ArrayList<CharacterThresholdBean> listCharacterThresholdBean1 =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
+//                        tv_xz.setText(listCharacterThresholdBean1.get(0).characterName);
+
+                        listString =inputData.getCollectionMoBan(tv_syrwbh.getText().toString());
+                        tv_mbmc.setText(listString.get(0).getCollectiontemplatename());
+                        dataBean=inputData.getSYQ(getArguments().getString("pinzhong"),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString());
+                        xzList = new ArrayList<>();
+                        if(dataBean!=null) {
+                            tv_syq.setText(dataBean.getRemarks());
 
 
 
+                            String collectiontemplatename1 = listString.get(0).getCharacterlist();
+                            Type listType1 = new TypeToken<LinkedList<CharacterlistBean>>() {
+                            }.getType();
+                            Gson gson1 = new Gson();
+                            LinkedList<CharacterlistBean> characterlist1 = gson1.fromJson(collectiontemplatename1, listType1);
+                            MLog.e(listString.get(0).getCharacterlist() + "=========" + characterlist1.size());
+                            String[] sortcharcode1 = dataBean.getSortcharcode().split(",");
+                            MLog.e(dataBean.getSortcharcode() + "=========" + sortcharcode1.length);
+                            for (CharacterlistBean c : characterlist1) {
+
+                                for (String s2 : sortcharcode1) {
+                                    if (c.getStdCharCode().equals(s2)) {
+
+                                        xzList.add(c.getName());
+                                    }
+                                }
+
+                            }
+                            tv_xz.setText(xzList.get(0));
+                        }else {
+                            tv_syq.setText("不在时间范围");
+                            tv_xz.setText("");
+                        }
                         popupWindowUtils1.dismiss();
                         break;
                     case R.id.ll_pop2:
                         setTextViewText(v,data1,position);
-                        tv_syq.setText(inputData.getSYQ(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),""));
-                        ArrayList<CharacterThresholdBean> listCharacterThresholdBean2 =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
-                        tv_xz.setText(listCharacterThresholdBean2.get(0).characterName);
+//                        tv_syq.setText(inputData.getSYQ(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString()).getRemarks());
+//                        ArrayList<CharacterThresholdBean> listCharacterThresholdBean2 =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
+//                        tv_xz.setText(listCharacterThresholdBean2.get(0).characterName);
+                        dataBean=inputData.getSYQ(getArguments().getString("pinzhong"),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString());
+                        xzList = new ArrayList<>();
+                        if(dataBean!=null) {
+                            tv_syq.setText(dataBean.getRemarks());
 
+
+
+                            String collectiontemplatename1 = listString.get(0).getCharacterlist();
+                            Type listType1 = new TypeToken<LinkedList<CharacterlistBean>>() {
+                            }.getType();
+                            Gson gson1 = new Gson();
+                            LinkedList<CharacterlistBean> characterlist1 = gson1.fromJson(collectiontemplatename1, listType1);
+                            MLog.e(listString.get(0).getCharacterlist() + "=========" + characterlist1.size());
+                            String[] sortcharcode1 = dataBean.getSortcharcode().split(",");
+                            MLog.e(dataBean.getSortcharcode() + "=========" + sortcharcode1.length);
+                            for (CharacterlistBean c : characterlist1) {
+
+                                for (String s2 : sortcharcode1) {
+                                    if (c.getStdCharCode().equals(s2)) {
+
+                                        xzList.add(c.getName());
+                                    }
+                                }
+
+                            }
+                            tv_xz.setText(xzList.get(0));
+                        }else {
+                            tv_syq.setText("不在时间范围");
+                            tv_xz.setText("");
+                        }
                         popupWindowUtils2.dismiss();
                         break;
                     case R.id.ll_pop3:
@@ -282,6 +416,10 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
                           pop=popupWindowUtils5;
                           break;
                       case R.id.bt_queren:
+                          if(xzList==null||xzList.size()<1) {
+                              Toast.makeText(getActivity(), "没有性状数据", Toast.LENGTH_SHORT).show();
+                              return;
+                          }
 
                           waitDialog = ProgressDialogUtils.showDialogNew(getActivity(), "初始化列表", true);
                           waitDialog.show();
@@ -291,12 +429,19 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
 
                           integer.putExtra("pinzhong",tv_pop.getText().toString());
                           integer.putExtra("syrwbh",tv_syrwbh.getText().toString());
-                          integer.putExtra("mbmc",tv_mbmc.getText().toString());
+                          ArrayList<String> listString =inputData.getMoBan(tv_syrwbh.getText().toString());
+
+                          integer.putExtra("mbmc",listString.get(0));
                           integer.putExtra("syq",tv_syq.getText().toString());
                           integer.putExtra("xz",tv_xz.getText().toString());
                           integer.putExtra("cfs",tv_cfs.getText().toString());
-                          startActivity(integer);
-
+                          ArrayList<CharacterThresholdBean> listCharacterThresholdBean =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
+                          ArrayList<String> listXzmc=new ArrayList<>() ;
+                          for(int i=0;i<listCharacterThresholdBean.size();i++){
+                              listXzmc.add(listCharacterThresholdBean.get(i).characterName);
+                          }
+                          integer.putStringArrayListExtra("listXzmc", (ArrayList<String>) xzList);
+startActivity(integer);
 //                          waitDialog.dismiss();
                           break;
                       case R.id.ll_shouye:

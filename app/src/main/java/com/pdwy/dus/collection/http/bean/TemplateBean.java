@@ -1,7 +1,7 @@
 package com.pdwy.dus.collection.http.bean;
 
 /**
- * 获取 分组模板 返回
+ * 获取 分组采集模板 返回
  * Author： by MR on 2019/1/21.
  */
 

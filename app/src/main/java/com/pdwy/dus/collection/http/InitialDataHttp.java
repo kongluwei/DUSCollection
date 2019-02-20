@@ -185,9 +185,11 @@ MLog.e("UID============="+ SharePreferencesUtils.getString("USER_ID",""));
 //                handler.sendMessage(msg);
 
                 MLog.e("分组id==========="+groupId);
+                //第三步 ： 获取分组下的性状
                 initialDataHttp3(dataBean,groupId,gson.fromJson(responses, TaskBean.class));
+                // 依据分组id获取模板
                 initialDataHttp4(groupId);
-                initialDataHttp5(groupId);
+
 
             }
         });
@@ -204,7 +206,7 @@ MLog.e("UID============="+ SharePreferencesUtils.getString("USER_ID",""));
                 .build();
         final Request request = new Request.Builder()
                 .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQFZXMB)
-                //添加请求头
+                //添加请求头  01016129476
                 .addHeader("accept","application/json;charset=UTF-8")
                 .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
                 .post(requestBody)//默认就是GET请求，可以不写

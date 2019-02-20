@@ -16,9 +16,12 @@ import com.pdwy.dus.collection.model.bean.PictureBean;
 import com.pdwy.dus.collection.model.bean.QunTiBean;
 import com.pdwy.dus.collection.model.bean.TemplateBean;
 import com.pdwy.dus.collection.utils.MLog;
+import com.pdwy.dus.collection.utils.helper.DateUtil;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -171,14 +174,23 @@ public class InputData {
             List<GrowthPeriodBean.DataBean> dataBeans=growthPeriod.getData();
             for(GrowthPeriodBean.DataBean dataBean:dataBeans) {
                 ContentValues values3 = new ContentValues();
-                values3.put("subcentergroupId", dataBean.getSubcentergroupId()); //品种
-                values3.put("id", dataBean.getId()); //模板
+                values3.put("subcentergroupId", dataBean.getSubcentergroupId()); //分组
+                values3.put("id", dataBean.getId());
                 values3.put("serialnum", dataBean.getSerialnum());
                 values3.put("remarks", dataBean.getRemarks());
                 values3.put("standardcode", dataBean.getStandardcode());
                 values3.put("starttime", dataBean.getStarttime());
                 values3.put("endtime", dataBean.getEndtime());
                 values3.put("sortcharcode", dataBean.getSortcharcode());
+                if(!"".equals(dataBean.getSortcharcode())&&dataBean.getSortcharcode()!=null){
+                    String sortcharcodeArray[]=dataBean.getSortcharcode().split(",");
+                    for(String sortcharcode:sortcharcodeArray) {
+
+                        ContentValues values = new ContentValues();
+                        values.put("growthPeriod", dataBean.getRemarks());
+                       int iii= db.update("Character", values, "groupId = ?  and characterId = ?", new String[]{dataBean.getSubcentergroupId(), sortcharcode});
+                    }
+                }
                 values3.put("name", dataBean.getName());
                 db.insert("BirthCycle", null, values3);
             }
@@ -622,7 +634,43 @@ public int getCollectionOfVarietiesHangInTheAir(CollectionTaskItemBean collectio
         db.close();
         return list;
     }
+    //获取采集模板列表list
+    public ArrayList<com.pdwy.dus.collection.http.bean.TemplateBean> getCollectionMoBan(String experimentalNumber){
+        ArrayList<com.pdwy.dus.collection.http.bean.TemplateBean> list=null;
+        SQLiteDatabase  db = msoh.getWritableDatabase();
+        if(db==null)
+            return list;
+        db.beginTransaction();// 开启事务
+        list=new ArrayList<>();
+        String subcentergroupId="";
+        com.pdwy.dus.collection.http.bean.TemplateBean templateBean;
+        Cursor c =db.rawQuery("select * from Character where experimentalNumber = ?",
+                new String[]{experimentalNumber});
+        while (c.moveToNext()) {
+            subcentergroupId=c.getString(c.getColumnIndex("groupId"));
+            break;
+        }
 
+
+        Cursor c2 =db.rawQuery("select * from CollectionTemplate where subcentergroupId = ?",
+                new String[]{subcentergroupId});
+        while (c2.moveToNext()) {
+           templateBean=new com.pdwy.dus.collection.http.bean.TemplateBean();
+            templateBean.setSubcentergroupId(c2.getString(c2.getColumnIndex("subcentergroupId")));
+            templateBean.setCollectiontemplatename(c2.getString(c2.getColumnIndex("collectiontemplatename")));
+            templateBean.setId(Integer.valueOf(c2.getString(c2.getColumnIndex("id"))));
+            templateBean.setGuideedition(c2.getString(c2.getColumnIndex("guideedition")));
+                    templateBean.setCharacternum(Integer.valueOf(c2.getString(c2.getColumnIndex("characternum"))));
+                    templateBean.setCharacterlist(c2.getString(c2.getColumnIndex("characterlist")));
+            list.add(templateBean);
+
+        }
+
+
+        db.endTransaction();                                    //关闭事务
+        db.close();
+        return list;
+    }
     //获取性状list  导入进阈值表
     public ArrayList<CharacterThresholdBean> getCharacterThresholdBeanlist(String zw,String sybh,String mb,String syq,int p,ArrayList<String> listString){
         if(listString!=null)
@@ -1141,7 +1189,25 @@ MLog.e("=========="+i+"----"+tjbh);
 
         return template;
     }
+    //根据实验任务编号获取对应分组id
+    public String getGroupId(String syrwbh){
+        String template=null;
+        SQLiteDatabase  db = msoh.getWritableDatabase();
+        if(db==null)
+            return null;
+        db.beginTransaction();// 开启事务
+        Cursor c = db.rawQuery("select * from Character where experimentalNumber = ?",
+                new String[]{syrwbh});
+        while (c.moveToNext()) {
+            template=c.getString(c.getColumnIndex("groupId"));
+            break;
 
+        }
+        db.endTransaction();                                    //关闭事务
+        db.close();
+
+        return template;
+    }
     //根据模板、生育期、观测方式获取性状
 
     public ArrayList<String> getCharacterList(String mbmc,String syq,String gcfs){
@@ -1199,22 +1265,28 @@ if(syq.equals(growthPeriod)) {
 
     //根据模板获取生育期
 
-    public String getContainGrowthPeriod(String mbmc){
+    public List<String> getContainGrowthPeriod(String groupId){
         String containGrowthPeriod=null;
         SQLiteDatabase  db = msoh.getWritableDatabase();
+        List<String>sortcharcodeList;
         if(db==null)
             return null;
+        sortcharcodeList=new ArrayList<>();
         db.beginTransaction();// 开启事务
-        Cursor c2 = db.rawQuery("select * from Template where templateName = ?",
-                new String[]{mbmc});
+        Cursor c2 = db.rawQuery("select * from BirthCycle where subcentergroupId = ?",
+                new String[]{groupId});
         while (c2.moveToNext()) {
-            containGrowthPeriod=c2.getString(c2.getColumnIndex("containGrowthPeriod"));
 
+            containGrowthPeriod=c2.getString(c2.getColumnIndex("sortcharcode"));
+            if(!"".equals(containGrowthPeriod)) {
+
+                sortcharcodeList.add(c2.getString(c2.getColumnIndex("remarks")));
+            }
         }
         db.endTransaction();                                    //关闭事务
         db.close();
         MLog.e("======="+containGrowthPeriod);
-        return containGrowthPeriod;
+        return sortcharcodeList;
     }
 
     //获取上一年保存的数据
@@ -1407,21 +1479,42 @@ break;
 
     //获取当前时间对应作物的生育期
 
-    public String  getSYQ(String zw,String sybh,String mb,String s){
+    public GrowthPeriodBean.DataBean  getSYQ(String zw,String sybh,String mb){
 
         SQLiteDatabase  db = msoh.getWritableDatabase();
 
         if(db==null)
-            return "";
+            return null;
         db.beginTransaction();// 开启事务
-        Cursor c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template = ?",
-                new String[]{zw,sybh,mb});
-        MLog.e("------==="+zw+sybh+mb+s+"====="+c.getCount());
-        String growthPeriod = "";
+        String subcentergroupId = "";
+        Cursor c =db.rawQuery("select * from Character where experimentalNumber = ?",
+                new String[]{sybh});
         while (c.moveToNext()) {
-            growthPeriod =c.getString(c.getColumnIndex("growthPeriod"));
-            MLog.e("------==="+zw+sybh+mb+s+"====="+c.getCount()+growthPeriod);
+            subcentergroupId=c.getString(c.getColumnIndex("groupId"));
             break;
+        }
+
+
+        Cursor c2 = db.rawQuery("select * from BirthCycle where  subcentergroupId = ?",
+                new String[]{subcentergroupId});
+        MLog.e("------==="+zw+sybh+mb+"====="+c.getCount());
+        GrowthPeriodBean.DataBean growthPeriod = null;
+        while (c2.moveToNext()) {
+            SimpleDateFormat formatter   =   new   SimpleDateFormat   ("yyyy-MM-dd HH:mm:ss");
+            Date curDate =  new Date(System.currentTimeMillis());
+            try {
+                  if(DateUtil.hourMinuteBetween(  formatter.format(curDate),c2.getString(c2.getColumnIndex("starttime")),c2.getString(c2.getColumnIndex("endtime")))
+                          ) {
+                      growthPeriod = new GrowthPeriodBean.DataBean();
+                      growthPeriod.setRemarks(c2.getString(c2.getColumnIndex("remarks")));
+                      growthPeriod.setSortcharcode(c2.getString(c2.getColumnIndex("sortcharcode")));
+
+                  }
+            } catch (Exception e) {
+                e.printStackTrace();
+                break;
+            }
+
 
         }
 
