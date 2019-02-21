@@ -51,7 +51,7 @@ public class QRCodeManualActivity extends BaseActivity{
         ll_head_dus.setVisibility(View.GONE);
         tv_head_title.setVisibility(View.VISIBLE);
         tv_head_title.setText("扫描采集");
-        et_qr_code_number.setText("");
+        et_qr_code_number.setText("20192000011A");
         inputData= new InputData(this);
     }
 
@@ -61,8 +61,8 @@ public class QRCodeManualActivity extends BaseActivity{
 
             case R.id.tv_qr_code_number:
                 try {
-                    String s[]=et_qr_code_number.getText().toString().split(">>");
-                    ArrayList<String> mbmcList= inputData.getTemplates(s[0],s[1]);
+                    String csbh= et_qr_code_number.getText().toString();
+                    ArrayList<String> mbmcList= inputData.getTemplates(csbh);
                     if(mbmcList==null||mbmcList.size()==0) {
                         Toast.makeText(this,"没有此编号",Toast.LENGTH_LONG).show();
                         return;
@@ -70,10 +70,10 @@ public class QRCodeManualActivity extends BaseActivity{
 //                Toast.makeText(this,"没有此编号", Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(QRCodeManualActivity.this,CollectionSettingActivity.class);
                     intent.putExtra("activityName","saoma");
-                    intent.putExtra("pinzhong",inputData.getVarieties(s[0],s[1]));
+                    intent.putExtra("pinzhong",inputData.getVarieties(csbh));
 
-                    intent.putExtra("syrwbh",s[0]);
-                    intent.putExtra("csbh",s[1]);
+                    intent.putExtra("syrwbh",inputData.getExperimentalNumber(csbh));
+                    intent.putExtra("csbh",csbh);
 
                     intent.putStringArrayListExtra("mbmcList",mbmcList);
 

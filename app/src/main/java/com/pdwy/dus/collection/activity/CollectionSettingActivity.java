@@ -21,11 +21,13 @@ import com.pdwy.dus.collection.utils.MLog;
 import com.pdwy.dus.collection.utils.PopupWindowUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import butterknife.BindView;
 
 /**
- * 采集设置页面
+ * 扫描采集设置页面
  * Author： by MR on 2018/9/10.
  */
 
@@ -68,10 +70,10 @@ public class CollectionSettingActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.ll_pop5)
      LinearLayout ll_pop5;
     InputData inputData;
-    ArrayList<TemplateBean> list;
+    ArrayList<com.pdwy.dus.collection.http.bean.TemplateBean> list;
     ArrayList<String> tjbhList;
-    String syq[];
-    String xzid[];
+    List<String> syq;
+    ArrayList<String> xzid;
     PopupWindowUtils popupWindowUtils1;
     PopupWindowUtils popupWindowUtils2;
     PopupWindowUtils popupWindowUtils3;
@@ -101,7 +103,7 @@ public class CollectionSettingActivity extends BaseActivity implements View.OnCl
            intent=getIntent();
 
          pinzhong=intent.getStringExtra("pinzhong");
-       list=inputData.getMoBan(pinzhong,0);
+        list=inputData.getCollectionMoBan(intent.getStringExtra("syrwbh"));
        if(list==null||list.size()==0){
            Toast.makeText(this,"没有相关信息",Toast.LENGTH_LONG).show();
            return;
@@ -118,22 +120,31 @@ public class CollectionSettingActivity extends BaseActivity implements View.OnCl
             tjbhList.add(tv_syrwbh.getText().toString());
         }
 
-        tv_mbmc.setText(list.get(0).templateName);
-         syq=list.get(0).containGrowthPeriod.split(",");
+        tv_mbmc.setText(list.get(0).getCollectiontemplatename());
 
-        tv_syq.setText(syq[0]);
+        //获取 生育期list
+        List<String> sortcharcodeList=inputData.getContainGrowthPeriod(inputData.getGroupId(intent.getStringExtra("syrwbh")));
+        //去重
+        sortcharcodeList = new ArrayList<>(new HashSet<>(sortcharcodeList));
+        syq= sortcharcodeList;
+        tv_syq.setText("全部");
 
-        tv_gcfs.setText("个体观测性状采集".equals(intent.getStringExtra("gcfs"))?"个体":"群体");
-        xzid=list.get(0).containCharacter.split(",");
-        int i=0;
- do{
-    tv_xz.setText(inputData.getCharacterName(xzid[i], list.get(0).templateName, tv_syq.getText().toString(), tv_gcfs.getText().toString(), intent.getStringExtra("syrwbh")));
-     i++;
-    if(i>=xzid.length)
-        break;
+        tv_gcfs.setText("全部");
 
-}
-while ("".equals(tv_xz.getText()));
+        xzid=inputData.getCharacterList(inputData.getTemplate(intent.getStringExtra("syrwbh")),tv_syq.getText().toString(),tv_gcfs.getText().toString());
+        tv_xz.setText("全部");
+
+
+//        int i=0;
+// do{
+//    tv_xz.setText(xzid.get(i));
+//     i++;
+//    if(i>=xzid.size())
+//        break;
+//
+//}
+//while ("".equals(tv_xz.getText()));
+
 
         ll_pop2.setOnClickListener(this);
         ll_pop3.setOnClickListener(this);
@@ -200,23 +211,30 @@ while ("".equals(tv_xz.getText()));
 //                    intent1.putExtra("pinzhong",pinzhong);
 //                    intent1.putStringArrayListExtra("tjbhList",tjbhList);
 //                    startActivity(intent1);
-                    if("".equals(tv_xz.getText().toString())||tv_xz.getText().toString()==null){
+                    if("".equals(tv_xz.getText().toString())||tv_xz.getText().toString()==null||xzid.size()<1){
 
                         Toast.makeText(this,"没有该数据",Toast.LENGTH_LONG).show();
                         return;
                     }
                     Intent intent1=new Intent(CollectionSettingActivity.this,CollectionManagementActivity.class);
-                    intent1.putExtra("activityName","zidingyi");
+                    intent1.putExtra("activityName",intent.getStringExtra("activityName"));
                     intent1.putExtra("pinzhong",pinzhong);
                     intent1.putExtra("syrwbh",intent.getStringExtra("syrwbh"));
-                    intent1.putExtra("mbmc",tv_mbmc.getText().toString());
-                    intent1.putExtra("syq",tv_syq.getText().toString());
+                    ArrayList<String> listString =inputData.getMoBan(intent.getStringExtra("syrwbh"));
+
+                    intent1.putExtra("mbmc",listString.get(0));
+
+                    intent1.putExtra("syq","");
                     intent1.putExtra("gcfs",tv_gcfs.getText().toString());
                     intent1.putExtra("xz",tv_xz.getText().toString());
                     ArrayList<String>listXzmc=new ArrayList<>();
                     listXzmc.add(tv_xz.getText().toString());
                     intent1.putStringArrayListExtra("tjbhList",tjbhList);
 
+                    if("全部".equals(tv_xz.getText().toString())) {
+                        intent1.putStringArrayListExtra("listXzmc", xzid);
+                    }
+                        else
                     intent1.putStringArrayListExtra("listXzmc",listXzmc);
                     startActivity(intent1);
                 }
@@ -231,30 +249,37 @@ while ("".equals(tv_xz.getText()));
             case R.id.ll_pop2:
                 data = new String[list.size()];
                 for (int i = 0; i < list.size(); i++) {
-                    data[i] = list.get(i).templateName;
+                    data[i] = list.get(i).getCollectiontemplatename();
                 }
             break;
             case R.id.ll_pop3:
 
-                data = new String[syq.length];
-                for (int i = 0; i < syq.length; i++) {
-                    data[i] = syq[i];
+                data = new String[syq.size()+1];
+                data[0]="全部";
+                for (int i = 0; i < syq.size(); i++) {
+                    data[i+1] = syq.get(i);
                 }
                 break;
             case R.id.ll_pop4:
 
-                data = new String[2];
-                data[0]="个体";
-                data[1]="群体";
+                data = new String[3];
+                data[0]="全部";
+                data[1]="个体";
+                data[2]="群体";
                 break;
             case R.id.ll_pop5:
-             MLog.e("----------");
-                data = new String[xzid.length];
+                if(xzid.size()<1) {
+                    data = new String[0];
+                    break;
+                }
+                data = new String[xzid.size()+1];
                 MLog.e("----------"+data.length);
-                for (int i = 0; i < xzid.length; i++) {
-                    data[i] = inputData.getCharacterName(xzid[i],tv_mbmc.getText().toString(),tv_syq.getText().toString(),tv_gcfs.getText().toString(),intent.getStringExtra("syrwbh"));
+                data[0]="全部";
+                for (int i = 0; i < xzid.size(); i++) {
+                    data[i+1] = xzid.get(i);
                 }
                 MLog.e("----------"+data.length);
+                break;
         }
         final  String[] data1 = data;
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -269,24 +294,30 @@ while ("".equals(tv_xz.getText()));
 
                 switch (v.getId()) {
                     case R.id.ll_pop2:
-                        tv_gcfs.setText("群体");
+                        tv_gcfs.setText("全部");
                         setTextViewText(v,data1,position);
-                        syq=list.get(position).containGrowthPeriod.split(",");
-                        tv_syq.setText(syq[0]);
-                        xzid=list.get(position).containCharacter.split(",");
-                        tv_xz.setText(inputData.getCharacterName(xzid[0],list.get(position).templateName,tv_syq.getText().toString(),tv_gcfs.getText().toString(),intent.getStringExtra("syrwbh")));
+                        tv_syq.setText("全部");
+                        xzid=inputData.getCharacterList(inputData.getTemplate(intent.getStringExtra("syrwbh")),tv_syq.getText().toString(),tv_gcfs.getText().toString());
+
+                        tv_xz.setText("全部");
                         popupWindowUtils2.dismiss();
                         break;
                     case R.id.ll_pop3:
-                        tv_gcfs.setText("群体");
+                        tv_gcfs.setText("全部");
                         setTextViewText(v,data1,position);
 
-                       tv_xz.setText(inputData.getCharacterName(xzid[0],tv_mbmc.getText().toString(),syq[position],tv_gcfs.getText().toString(),intent.getStringExtra("syrwbh")));
+                        xzid=inputData.getCharacterList(inputData.getTemplate(intent.getStringExtra("syrwbh")),tv_syq.getText().toString(),tv_gcfs.getText().toString());
+
+                            tv_xz.setText("全部");
                         popupWindowUtils3.dismiss();
                         break;
                     case R.id.ll_pop4:
                         setTextViewText(v,data1,position);
-                        tv_xz.setText(inputData.getCharacterName(xzid[0],tv_mbmc.getText().toString(),tv_syq.getText().toString(),tv_gcfs.getText().toString(),intent.getStringExtra("syrwbh")));
+//                        tv_xz.setText(inputData.getCharacterName(xzid[0],tv_mbmc.getText().toString(),tv_syq.getText().toString(),tv_gcfs.getText().toString(),intent.getStringExtra("syrwbh")));
+
+                        xzid=inputData.getCharacterList(inputData.getTemplate(intent.getStringExtra("syrwbh")),tv_syq.getText().toString(),tv_gcfs.getText().toString());
+
+                            tv_xz.setText("全部");
 
                         popupWindowUtils4.dismiss();
                         break;
