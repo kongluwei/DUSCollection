@@ -125,6 +125,17 @@ public class MainActivity extends BaseActivity {
     //    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreateAfter() {
+
+        //检查当前权限（若没有该权限，值为-1；若有该权限，值为0）
+        int hasReadExternalStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.READ_PHONE_STATE);
+        Log.e("READ_PHONE_STATE", hasReadExternalStoragePermission + "***");
+        if (hasReadExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+            //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+        }
+
         //获取设备唯一标识码】
         TelephonyManager telManager = (TelephonyManager) this
                 .getSystemService(Context.TELEPHONY_SERVICE);
@@ -159,9 +170,9 @@ public class MainActivity extends BaseActivity {
 
 
         //检查当前权限（若没有该权限，值为-1；若有该权限，值为0）
-        int hasReadExternalStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
-        Log.e("PERMISION_CODE", hasReadExternalStoragePermission + "***");
-        if (hasReadExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
+        int hasReadExternalStoragePermission1 = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
+        Log.e("PERMISION_CODE", hasReadExternalStoragePermission1 + "***");
+        if (hasReadExternalStoragePermission1 == PackageManager.PERMISSION_GRANTED) {
 
         } else {
             //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
