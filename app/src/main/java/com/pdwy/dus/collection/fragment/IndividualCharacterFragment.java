@@ -208,8 +208,12 @@ public class IndividualCharacterFragment extends Fragment {
 
                         }
                     });
-             inputData.getLastYearData(mListData.get(position));
-
+            String lastYearData= inputData.getLastYearData(mListData.get(position));
+            if(lastYearData==null)
+                Toast.makeText(getActivity(),"没有找到上一年数据",Toast.LENGTH_SHORT).show();
+                    String lastYear[] = new String[0];
+                    if(lastYearData!=null)
+                    lastYear =lastYearData.split(",");
                     LinearLayout ll_sc_synsj=(LinearLayout) view1.findViewById(R.id.ll_sc_synsj);
                     for(int i=1;i<21;i++) {
                         View view = LinearLayout.inflate(getActivity(), R.layout.item_ll_sc_synsj, null);
@@ -221,12 +225,14 @@ public class IndividualCharacterFragment extends Fragment {
                         View view22 = LinearLayout.inflate(getActivity(), R.layout.item_item_ll_sc_synsj, null);
 
                         linearLayout.addView(view22);
-                        View view33 = LinearLayout.inflate(getActivity(), R.layout.item_item_ll_sc_synsj, null);
-
-                        linearLayout.addView(view33);
+//                        View view33 = LinearLayout.inflate(getActivity(), R.layout.item_item_ll_sc_synsj, null);
+//
+//                        linearLayout.addView(view33);
 //                        linearLayout.addViewInLayout(view33,1,);
-                        View view44 = LinearLayout.inflate(getActivity(), R.layout.item_item_ll_sc_synsj2, null);
-
+                        View view44 =  LinearLayout.inflate(getActivity(), R.layout.item_item_ll_sc_synsj2, null);
+                        TextView text44=view44.findViewById(R.id.ed_item_item_ll_sc_synsj);
+                        if(lastYearData!=null)
+                            text44.setText(lastYear[i]);
                         linearLayout.addView(view44);
                         ll_sc_synsj.addView(view);
                     }
