@@ -687,7 +687,7 @@ public int getCollectionOfVarietiesHangInTheAir(CollectionTaskItemBean collectio
             c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template = ? and growthPeriod = ? and fillInTheState = ?",
                     new String[]{zw,sybh,mb,syq,"0"});
 
-        else if(p==9)
+        else if(p==9) //自定义和扫描 不用生育期
             c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template = ?",
                     new String[]{zw,sybh,mb});
         else //获取生育期下性状
@@ -1134,15 +1134,15 @@ MLog.e("=========="+i+"----"+tjbh);
     }
 
     //根据测试编号获取对应模板
-    public ArrayList<String> getTemplates(String syrwbh,String csbh){
+    public ArrayList<String> getTemplates(String csbh){
         ArrayList<String> templateList=null;
         SQLiteDatabase  db = msoh.getWritableDatabase();
         if(db==null)
             return null;
         db.beginTransaction();// 开启事务
         templateList=new ArrayList<>();
-        Cursor c = db.rawQuery("select * from Character where experimentalNumber = ? and testNumber = ?",
-                new String[]{syrwbh,csbh});
+        Cursor c = db.rawQuery("select * from Character where testNumber = ?",
+                new String[]{csbh});
         while (c.moveToNext()) {
             templateList.add(c.getString(c.getColumnIndex("template")));
 
@@ -1153,14 +1153,14 @@ MLog.e("=========="+i+"----"+tjbh);
         return templateList;
     }
     //根据测试编号获取对应品种
-    public String getVarieties(String syrwbh,String csbh){
+    public String getVarieties(String csbh){
         String templateList=null;
         SQLiteDatabase  db = msoh.getWritableDatabase();
         if(db==null)
             return null;
         db.beginTransaction();// 开启事务
-        Cursor c = db.rawQuery("select * from Character where experimentalNumber = ? and testNumber = ?",
-                new String[]{syrwbh,csbh});
+        Cursor c = db.rawQuery("select * from Character where  testNumber = ?",
+                new String[]{csbh});
         while (c.moveToNext()) {
             templateList=c.getString(c.getColumnIndex("varieties"));
              continue;
@@ -1240,10 +1240,19 @@ MLog.e("=========="+i+"----"+tjbh);
                 observationMethod=c3.getString(c3.getColumnIndex("observationMethod"));
              break;
             }
-if(syq.equals(growthPeriod)) {
+
+if(syq.equals(growthPeriod)||"全部".equals(syq)) {
                 switch (gcfs){
+                    case "个体":
+                        if("MS".equals(observationMethod)||"VS".equals(observationMethod))
+                            list.add(characterName);
+                        break;
                     case "个体观测性状采集":
                         if("MS".equals(observationMethod)||"VS".equals(observationMethod))
+                            list.add(characterName);
+                        break;
+                    case "群体":
+                        if("MG".equals(observationMethod)||"VG".equals(observationMethod))
                             list.add(characterName);
                         break;
                     case "群体观测性状采集":
@@ -1252,6 +1261,9 @@ if(syq.equals(growthPeriod)) {
                         break;
                     case "异常性状采集":
                             list.add(characterName);
+                        break;
+                    case "全部":
+                        list.add(characterName);
                         break;
                 }
 
@@ -1281,11 +1293,12 @@ if(syq.equals(growthPeriod)) {
             if(!"".equals(containGrowthPeriod)) {
 
                 sortcharcodeList.add(c2.getString(c2.getColumnIndex("remarks")));
+
             }
         }
         db.endTransaction();                                    //关闭事务
         db.close();
-        MLog.e("======="+containGrowthPeriod);
+
         return sortcharcodeList;
     }
 
