@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.pdwy.dus.collection.http.bean.BeforeCycleBeanOut;
 import com.pdwy.dus.collection.http.bean.CharacterBean;
 import com.pdwy.dus.collection.http.bean.GroupingBean;
 import com.pdwy.dus.collection.http.bean.GrowthPeriodBean;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -68,13 +70,15 @@ public class InitialDataHttp {
     public void initialDataHttp1(){
 MLog.e("UID============="+ SharePreferencesUtils.getString("USER_ID",""));
         RequestBody requestBody = new FormBody.Builder()
-                .add("userId", SharePreferencesUtils.getString("USER_ID",""))
+//                .add("userId", SharePreferencesUtils.getString("USER_ID",""))
                 .build();
         final Request request = new Request.Builder()
                 .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQCSYSYYDWWCDFZ)
                 //添加请求头
-                .addHeader("accept","application/json;charset=UTF-8")
-                .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+                .addHeader("accept","application/json, text/javascript, */*; q=0.01")
+                .addHeader("Content-Type","application/json;charset=UTF-8")
+                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
+
                 .post(requestBody)//默认就是GET请求，可以不写
                 .build();
 
@@ -145,15 +149,25 @@ MLog.e("UID============="+ SharePreferencesUtils.getString("USER_ID",""));
     //第二步： 获取分组下的任务
     public void initialDataHttp2(final GroupingBean.DataBean dataBean, final String groupId){
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("groupId",groupId)
-                .add("userId", SharePreferencesUtils.getString("USER_ID",""))
-                .build();
+//        RequestBody requestBody = new FormBody.Builder()
+//                .add("groupId",groupId)
+////                .add("userId", SharePreferencesUtils.getString("USER_ID",""))
+//                .build();
+
+
+        GroupId groupId1=new GroupId();
+        groupId1.groupId=groupId;
+        String uploadString =gson.toJson(groupId1);
+        MLog.e(uploadString);
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                , uploadString);
         final Request request = new Request.Builder()
                 .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQFZXDRW)
                 //添加请求头
-                .addHeader("accept","application/json;charset=UTF-8")
-                .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+                .addHeader("accept","application/json, text/javascript, */*; q=0.01")
+                .addHeader("Content-Type","application/json;charset=UTF-8")
+                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
                 .post(requestBody)//默认就是GET请求，可以不写
                 .build();
 
@@ -200,18 +214,33 @@ MLog.e("UID============="+ SharePreferencesUtils.getString("USER_ID",""));
     // 依据分组id获取模板
     public void initialDataHttp4(final String groupId){
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("groupId",groupId)
-                .add("userId", SharePreferencesUtils.getString("USER_ID",""))
-                .build();
+//        RequestBody requestBody = new FormBody.Builder()
+//                .add("groupId",groupId)
+////                .add("userId", SharePreferencesUtils.getString("USER_ID",""))
+//                .build();
+//        final Request request = new Request.Builder()
+//                .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQFZXMB)
+//                //添加请求头  01016129476
+//                .addHeader("accept","application/json, text/javascript, */*; q=0.01")
+//                .addHeader("Content-Type","application/json;charset=UTF-8")
+//                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
+//                .post(requestBody)//默认就是GET请求，可以不写
+//                .build();
+        GroupId groupId1=new GroupId();
+        groupId1.groupId=groupId;
+        String uploadString =gson.toJson(groupId1);
+        MLog.e(uploadString);
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                , uploadString);
         final Request request = new Request.Builder()
                 .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQFZXMB)
-                //添加请求头  01016129476
-                .addHeader("accept","application/json;charset=UTF-8")
-                .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+                //添加请求头
+                .addHeader("accept","application/json, text/javascript, */*; q=0.01")
+                .addHeader("Content-Type","application/json;charset=UTF-8")
+                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
                 .post(requestBody)//默认就是GET请求，可以不写
                 .build();
-
 
         Call call = okHttpClient.newCall(request);
 
@@ -253,18 +282,32 @@ MLog.e("UID============="+ SharePreferencesUtils.getString("USER_ID",""));
    // 依据分组id获取生育期
     public void initialDataHttp5(final String groupId){
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("groupId",groupId)
-                .add("userId",SharePreferencesUtils.getString("USER_ID",""))
-                .build();
+//        RequestBody requestBody = new FormBody.Builder()
+//                .add("groupId",groupId)
+//                .add("userId",SharePreferencesUtils.getString("USER_ID",""))
+//                .build();
+//        final Request request = new Request.Builder()
+//                .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQSYZQ)
+//                //添加请求头
+//                .addHeader("accept","application/json;charset=UTF-8")
+//                .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+//                .post(requestBody)//默认就是GET请求，可以不写
+//                .build();
+        GroupId groupId1=new GroupId();
+        groupId1.groupId=groupId;
+        String uploadString =gson.toJson(groupId1);
+        MLog.e(uploadString);
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                , uploadString);
         final Request request = new Request.Builder()
                 .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQSYZQ)
                 //添加请求头
-                .addHeader("accept","application/json;charset=UTF-8")
-                .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+                .addHeader("accept","application/json, text/javascript, */*; q=0.01")
+                .addHeader("Content-Type","application/json;charset=UTF-8")
+                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
                 .post(requestBody)//默认就是GET请求，可以不写
                 .build();
-
 
         Call call = okHttpClient.newCall(request);
 
@@ -306,17 +349,31 @@ if("0".equals(growthPeriodBean.getCode())){
     public void initialDataHttp3(final GroupingBean.DataBean dataBean, final String groupId, final TaskBean taskBean){
 
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("groupId", groupId)
-                .build();
+//        RequestBody requestBody = new FormBody.Builder()
+//                .add("groupId", groupId)
+//                .build();
+//        final Request request = new Request.Builder()
+//                .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQFZDYXZSJ)
+//                //添加请求头
+//                .addHeader("accept","application/json;charset=UTF-8")
+//                .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+//                .post(requestBody)//默认就是GET请求，可以不写
+//                .build();
+        GroupId groupId1=new GroupId();
+        groupId1.groupId=groupId;
+        String uploadString =gson.toJson(groupId1);
+        MLog.e(uploadString);
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                , uploadString);
         final Request request = new Request.Builder()
                 .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQFZDYXZSJ)
                 //添加请求头
-                .addHeader("accept","application/json;charset=UTF-8")
-                .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+                .addHeader("accept","application/json, text/javascript, */*; q=0.01")
+                .addHeader("Content-Type","application/json;charset=UTF-8")
+                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
                 .post(requestBody)//默认就是GET请求，可以不写
                 .build();
-
 
         Call call = okHttpClient.newCall(request);
 
@@ -365,9 +422,9 @@ if("0".equals(growthPeriodBean.getCode())){
                                  character.testNumber=taskBean.getData().get(p).getTestCode();
                                  character.groupId=dataBean.getId();
                                  character.varietyId=taskBean.getData().get(p).getId();
-                                 character.growthPeriod="发芽";
+                                 character.growthPeriod="";
                                  character.growthPeriodTime="8.20-9.01;";
-                                 character.observationalQuantity="40";
+                                 character.observationalQuantity="20";
                                  character.observationMethod=characterBean.getData().get(t).getObservation();
                                  character.fillInTheState="0";
                                  character.dataUnit=characterBean.getData().get(t).getUnit();
@@ -396,7 +453,7 @@ if("0".equals(growthPeriodBean.getCode())){
                          }
                          MLog.e("containCharacter========"+containCharacter);
 
-//导入模板
+//导入模板//导入模板
                          inputData.initialTemplate(dataBean.getCropName(),dataBean.getGuideeditioncode(),containCharacter);
                      //导入性状
                      inputData.initialCharacter(list);
@@ -405,6 +462,10 @@ if("0".equals(growthPeriodBean.getCode())){
                      msg.obj = groupingBean;
                      msg.what=5;   //标志消息的标志
                      handler.sendMessage(msg);
+
+//                     for (int i=0;i<taskBean.getData().size();i++) {
+//                         initialDataHttpBeforeCycleId(taskBean.getData().get(i).getBeforeCycleId());
+//                     }
                  }
 
           else {
@@ -419,6 +480,67 @@ if("0".equals(growthPeriodBean.getCode())){
             }
         });
 
+
+    }
+
+    /**
+     * 获取该任务上一周期性状值
+     */
+    public void initialDataHttpBeforeCycleId(int beforeCycleId) {
+        if(beforeCycleId>0){
+            BeforeCycleId beforeCycleId1=new BeforeCycleId();
+            beforeCycleId1.setBeforeCycleId(beforeCycleId);
+            String uploadString =gson.toJson(beforeCycleId1);
+            MLog.e(uploadString);
+            //MediaType  设置Content-Type 标头中包含的媒体类型值
+            RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                    , uploadString);
+            final Request request = new Request.Builder()
+                    .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.HQFZXDRWSYZQ)
+                    //添加请求头
+                    .addHeader("accept","application/json, text/javascript, */*; q=0.01")
+                    .addHeader("Content-Type","application/json;charset=UTF-8")
+                    .post(requestBody)//默认就是GET请求，可以不写
+                    .build();
+
+            Call call = okHttpClient.newCall(request);
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    MLog.e("上一周期请求失败onFailure: "+call.toString());
+                    Message msg =Message.obtain();
+
+//                msg.obj = "任务请求失败";
+//                msg.what=0;   //标志消息的标志
+//                handler.sendMessage(msg);
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    MLog.e("onResponse: " + response.toString());
+
+                    String responses= response.body().string();
+                    MLog.e("上一周期数据返回========="+responses);
+                    // http 包下的
+                    BeforeCycleBeanOut beforeCycleBeanOut= gson.fromJson(responses, BeforeCycleBeanOut.class);
+
+
+                    if("0".equals(beforeCycleBeanOut.getCode())) {
+                        inputData=new InputData(context);
+
+                        inputData.initialBeforeCycle(beforeCycleBeanOut);
+                    }
+                    MLog.e("模板========"+beforeCycleBeanOut.getMsg());
+//                taskBean = gson.fromJson(responses, TaskBean.class);
+//                MLog.e(taskBean.getData().get(0).getTestCode());
+
+//                initialDataHttp3(groupId);
+                }
+            });
+
+
+        }
 
     }
 
@@ -456,28 +578,64 @@ if("0".equals(growthPeriodBean.getCode())){
                 MLog.e("图片服务器地址请求成功onResponse: ");
                 MLog.e("图片服务器地址请求返回========="+responses);
 
-                photoHttpBean = gson.fromJson(responses, PhotoHttpBean.class);
+                try {
+                    photoHttpBean = gson.fromJson(responses, PhotoHttpBean.class);
 
-                if("成功".equals(photoHttpBean.getMsg())){
-                    Message msg =Message.obtain();
-                    msg.obj = photoHttpBean;
-                    msg.what=1;   //标志消息的标志
-                    handler.sendMessage(msg);
+                    if("成功".equals(photoHttpBean.getMsg())){
+                        Message msg =Message.obtain();
+                        msg.obj = photoHttpBean;
+                        msg.what=1;   //标志消息的标志
+                        handler.sendMessage(msg);
 
 
-                }else {
+                    }else {
 
+                        Message msg =Message.obtain();
+                        msg.obj = "请求失败";
+                        msg.what=0;   //标志消息的标志
+                        handler.sendMessage(msg);
+                    }
+
+                }catch (Exception e){
                     Message msg =Message.obtain();
                     msg.obj = "请求失败";
                     msg.what=0;   //标志消息的标志
                     handler.sendMessage(msg);
+                    MLog.e("图片服务器地址解析出错===========");
                 }
+
 
             }
         });
 
 
 
+    }
+
+
+    private class GroupId {
+
+        private String  groupId;
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(String groupId) {
+            this.groupId = groupId;
+        }
+    }
+    private class  BeforeCycleId{
+
+        private int  beforeCycleId;
+
+        public int getBeforeCycleId() {
+            return beforeCycleId;
+        }
+
+        public void setBeforeCycleId(int beforeCycleId) {
+            this.beforeCycleId = beforeCycleId;
+        }
     }
 
 }

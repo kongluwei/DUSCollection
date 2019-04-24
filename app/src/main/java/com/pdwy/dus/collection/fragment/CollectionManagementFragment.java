@@ -49,7 +49,7 @@ import java.util.stream.Collector;
 import butterknife.OnClick;
 
 /**
- * 采集管理Fragment
+ * 采集管理设置Fragment
  * Author： by MR on 2018/8/7.
  */
 
@@ -134,6 +134,10 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
         ArrayList<CollectionTaskItemBean> listCollectionTaskItemBean=inputData.getCollectionTaskItemBeanList(collectionTaskBean,1);
         tv_syrwbh.setText(listCollectionTaskItemBean.get(0).taskName);
         listString =inputData.getCollectionMoBan(tv_syrwbh.getText().toString());
+        if(listString.size()<1){
+            tv_mbmc.setText("没有模板");
+            return;
+        }
         tv_mbmc.setText(listString.get(0).getCollectiontemplatename());
         xzList=new ArrayList<>();
         dataBean=inputData.getSYQ(getArguments().getString("pinzhong"),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString());
@@ -159,7 +163,10 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
                 }
 
             }
+            if(xzList.size()>0)
             tv_xz.setText(xzList.get(0));
+            else
+                tv_xz.setText("");
         }else {
             tv_syq.setText("不在时间范围");
             tv_xz.setText("");

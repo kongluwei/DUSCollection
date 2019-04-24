@@ -7,9 +7,13 @@ import android.os.Message;
 import com.google.gson.Gson;
 import com.pdwy.dus.collection.http.bean.GroupingBean;
 import com.pdwy.dus.collection.http.bean.LogInBean;
+import com.pdwy.dus.collection.http.bean.LogInBeanEnter;
+import com.pdwy.dus.collection.http.bean.LogInBeanOut;
 import com.pdwy.dus.collection.utils.MLog;
 import com.pdwy.dus.collection.utils.SharePreferencesUtils;
+import com.pdwy.dus.collection.utils.SystemUtil;
 import com.pdwy.dus.collection.utils.ToastUtil;
+import com.pdwy.dus.collection.utils.UniquePsuedoIDUtil;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -46,10 +51,25 @@ public class LoginHttp {
 
     public   void  logIn(String account  , String passWord){
               MLog.e(account+"==="+passWord);
-        RequestBody requestBody = new FormBody.Builder()
-                .add("account", account)
-                .add("passWord", passWord)
-                .build();
+//        RequestBody requestBody = new FormBody.Builder()
+//                .add("account", account)
+//                .add("passWord", passWord)
+//                .build();
+
+        LogInBeanEnter logInBeanEnter = new LogInBeanEnter();
+        logInBeanEnter.setAccount(account);
+        logInBeanEnter.setPasswd(passWord);
+        logInBeanEnter.setModel(SystemUtil.getDeviceBrand() + "  " + SystemUtil.getSystemModel());
+        logInBeanEnter.setModelSign(UniquePsuedoIDUtil.getUniquePsuedoIdMD5());
+        logInBeanEnter.setAppType("2");
+
+        String uploadString = gson.toJson(logInBeanEnter);
+        MLog.e(uploadString);
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                , uploadString);
+
+
         final Request request = new Request.Builder()
                 .url(SharePreferencesUtils.getString("dizi",Api.URL_CS)+Api.DL)
                 //添加请求头
@@ -78,15 +98,15 @@ public class LoginHttp {
                 MLog.e("登陆请求成功onResponse: " + response.toString());
 
                 String responses= response.body().string();
-
+                MLog.e("登陆返回========="+responses);
                 if(responses==null||"".equals(responses)){
                     Message msg =Message.obtain();
-                    msg.obj = "登陆异常！";
+                    msg.obj = "账号或密码错误！";
                     msg.what=0;   //标志消息的标志
                     handler.sendMessage(msg);
                     return;
                 }
-                MLog.e("登陆返回========="+responses);
+
 
 
 
@@ -97,12 +117,13 @@ public class LoginHttp {
 //                msg.what=1;   //标志消息的标志
 //                handler.sendMessage(msg);
 //                ToastUtil.showMessage(context,"登陆成功");
-                LogInBean logInBean=gson.fromJson(responses, LogInBean.class);
-                    if("0".equals(logInBean.getCode())){
-                    Message msg =Message.obtain();
-                    msg.obj = logInBean.getMsg();
-                    msg.what=1;   //标志消息的标志  成功
-                    handler.sendMessage(msg);
+                try {
+                    LogInBeanOut logInBean=gson.fromJson(responses, LogInBeanOut.class);
+                    if("1000".equals(logInBean.getCode())){
+                        Message msg =Message.obtain();
+                        msg.obj = logInBean.getData().getAppLoginSessionID();
+                        msg.what=1;   //标志消息的标志  成功
+                        handler.sendMessage(msg);
                     }else {
                         Message msg =Message.obtain();
                         msg.obj = logInBean.getMsg();
@@ -110,6 +131,11 @@ public class LoginHttp {
                         handler.sendMessage(msg);
 
                     }
+                }catch (Exception e){
+
+                    MLog.e("异常=============");
+                }
+
 
 
             }

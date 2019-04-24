@@ -19,8 +19,8 @@ public class Api {
 
 //    static String URL="http://192.168.3.127:8080/tester/api";
 
-
-    static String URL_CS="http://192.168.3.127:8080/tester";
+    static String URL_CS="http://192.168.20.20:8080/tester";
+//    static String URL_CS="http://192.168.3.127:8080/tester";
 
     static String URL="/api";
 
@@ -34,13 +34,15 @@ public class Api {
     //获取分组下的任务
     static String HQFZXDRW=URL+"/appGetVarietyData";
 
+    //获取分组下的任务上一周期的性状值
+    static String HQFZXDRWSYZQ=URL+"/appGetVarietyCharacterValData";
     //获取分组下模板
     static String HQFZXMB=URL+"/appGetCollectionTemplateData";
 
     //获取生育周期
     static String HQSYZQ=URL+"/appGetBirthCycleTemplateData";
 
-    //获取分组对应的性状数据
+    //获取分组对应的性状
     static String HQFZDYXZSJ=URL+"/appGetCharacterData";
     //获取图片服务器地址
     static String HQTPFWQDZ=URL+"/appGetFileServiceIp";

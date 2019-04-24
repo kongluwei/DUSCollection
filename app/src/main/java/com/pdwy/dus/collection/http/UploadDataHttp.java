@@ -71,12 +71,12 @@ public class UploadDataHttp {
         okHttpClient.dispatcher().setMaxRequestsPerHost(1);
     }
 
-    //上传图片数据
+    //上传图片
     public void uploadPhotoData(PictureBean pictureBean, String photoHttp, final int p){
 
 
 
-        uploadBean.setUserId(Integer.valueOf(SharePreferencesUtils.getString("USER_ID","")));
+//        uploadBean.setUserId(Integer.valueOf(SharePreferencesUtils.getString("USER_ID","")));
         uploadBean.setGroupId(Integer.valueOf(inputData.getCharacterGroupId(pictureBean.experimentalNumber)));
         uploadBean.setVarietyId(Integer.valueOf(inputData.getCharacterVarietyId(pictureBean.testNumber)));
         UploadBean.AbnormalDataManipulationBean abnormalDataManipulationBean= new UploadBean.AbnormalDataManipulationBean();
@@ -103,6 +103,7 @@ public class UploadDataHttp {
                 .post(requestBody)
                 .addHeader("accept","application/json;charset=UTF-8")
                 .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
                 .build();
 
         //创建/Call
@@ -145,7 +146,7 @@ public class UploadDataHttp {
     public void uploadData(int groupId, int varietyId ){
         mListData= inputData.getCharacterBeanList(String.valueOf(groupId),String.valueOf(varietyId));
 
-        uploadBean.setUserId(Integer.valueOf(SharePreferencesUtils.getString("USER_ID","")));
+//        uploadBean.setUserId(Integer.valueOf(SharePreferencesUtils.getString("USER_ID","")));
         uploadBean.setGroupId(groupId);
         uploadBean.setVarietyId(varietyId);
 
@@ -297,6 +298,8 @@ public class UploadDataHttp {
                 .post(requestBody)
                 .addHeader("accept","application/json;charset=UTF-8")
                 .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
+                .addHeader("appLoginId",SharePreferencesUtils.getString("USER_ID",""))
+
                 .build();
 
         //创建/Call
@@ -308,7 +311,7 @@ public class UploadDataHttp {
             public void onFailure(Call call, IOException e) {
                 MLog.e("网络连接错误");
                 Message msg=new Message();
-                msg.what=2;
+                msg.what=0;
                 msg.obj="网络连接错误";
                 handler.sendMessage(msg);
 
