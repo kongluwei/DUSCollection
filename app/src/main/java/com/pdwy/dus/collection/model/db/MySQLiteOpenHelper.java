@@ -24,13 +24,13 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     public MySQLiteOpenHelper(Context context){
-        this(context, "DUS_caiji"+ SharePreferencesUtils.getString(context.getString(R.string.user_id),"")+".db",null,1);
+        this(context, "DUS_caiji"+ SharePreferencesUtils.getString(context.getString(R.string.user_name),"")+".db",null,1);
 //        this(context, "DUS_caiji.db",null,1);
 
         this.context = context;
     }
     public MySQLiteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        this(context, "DUS_caiji"+SharePreferencesUtils.getString(context.getString(R.string.user_id),"")+".db",null,1);
+        this(context, "DUS_caiji"+SharePreferencesUtils.getString(context.getString(R.string.user_name),"")+".db",null,1);
         this.context = context;
     }
 

@@ -41,6 +41,18 @@ public class UploadingDataFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {      //判断标志位
+                case 0: //上传成功
+
+                        parentActivity.dismissLoadingDialog();
+                        //                        判断是否上传成功
+                        Toast.makeText(parentActivity,msg.obj.toString(),Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+                    break;
 
                 case 1: // 加载完成
                     ll_ckbc_nr.addView((LinearLayout)msg.obj);

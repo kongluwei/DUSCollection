@@ -51,7 +51,7 @@ public class QRCodeManualActivity extends BaseActivity{
         ll_head_dus.setVisibility(View.GONE);
         tv_head_title.setVisibility(View.VISIBLE);
         tv_head_title.setText("扫描采集");
-        et_qr_code_number.setText("20192000011A");
+//        et_qr_code_number.setText("20192000011A");
         inputData= new InputData(this);
     }
 

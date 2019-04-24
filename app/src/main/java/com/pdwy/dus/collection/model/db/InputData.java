@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.pdwy.dus.collection.http.bean.BeforeCycleBeanOut;
 import com.pdwy.dus.collection.http.bean.GrowthPeriodBean;
 import com.pdwy.dus.collection.model.bean.CharacterBean;
 import com.pdwy.dus.collection.model.bean.CharacterThresholdBean;
@@ -109,6 +110,11 @@ public class InputData {
 
     }
 
+    public void initialBeforeCycle(BeforeCycleBeanOut beforeCycleBeanOut){
+         List<BeforeCycleBeanOut.DataBean.IndividualsBean> ListIndividualsBean=beforeCycleBeanOut.getData().getIndividuals();
+
+
+    }
     //初始数据库数据 模板
     public   void initialTemplate(String varieties,String templateName,String containCharacter){
         SQLiteDatabase  db = msoh.getWritableDatabase();
@@ -917,6 +923,7 @@ return list;
         for(QunTiBean q:list) {
             ContentValues values = new ContentValues();
             values.put("abnormalContent", q.bcnr);
+            values.put("abnormal", "1");
             values.put("fillInTheState", "1"); // 是否可上报
 
             db.update("Character", values, "experimentalNumber = ?  and testNumber = ?  and characterName = ?", new String[]{q.experimentalNumber,q.csbh,q.xzmc});
@@ -934,6 +941,7 @@ return list;
         for(QunTiBean q:list) {
             ContentValues values = new ContentValues();
             values.put("abnormalContent", q.bcnr);
+            values.put("abnormal", "1");
             values.put("fillInTheState", "1"); // 是否可上报
 
             db.update("Character", values, "experimentalNumber = ?  and testNumber = ?  and characterName = ?", new String[]{q.experimentalNumber,q.csbh,q.xzmc});
@@ -1390,11 +1398,11 @@ break;
         db.beginTransaction();// 开启事务
         Cursor c;
         if(syq==null||"".equals(syq))
-             c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =? and abnormal = ?",
-                    new String[]{pz,syrwbh,mbmc,"1"});
+             c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =?",
+                    new String[]{pz,syrwbh,mbmc});
             else
-        c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =? and growthPeriod = ? and abnormal = ?",
-                new String[]{pz,syrwbh,mbmc,syq,"1"});
+        c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =? and growthPeriod = ?",
+                new String[]{pz,syrwbh,mbmc,syq});
         while (c.moveToNext()) {
             CharacterBean characterBean = new CharacterBean();
             characterBean.characterId=c.getString(c.getColumnIndex("characterId"));
@@ -1510,7 +1518,7 @@ break;
 
         Cursor c2 = db.rawQuery("select * from BirthCycle where  subcentergroupId = ?",
                 new String[]{subcentergroupId});
-        MLog.e("------==="+zw+sybh+mb+"====="+c.getCount());
+        MLog.e("------==="+zw+sybh+mb+"====="+c2.getCount());
         GrowthPeriodBean.DataBean growthPeriod = null;
         while (c2.moveToNext()) {
             SimpleDateFormat formatter   =   new   SimpleDateFormat   ("yyyy-MM-dd HH:mm:ss");

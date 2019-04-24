@@ -30,7 +30,8 @@ create table if not exists Character(
             codeValue text ,
             abnormal text ,
             abnormalContent text ,
-            pictureName text
+            pictureName text,
+            beforeCycle text
             );
 create table if not exists Picture(
                         groupId text ,

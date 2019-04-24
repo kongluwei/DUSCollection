@@ -146,10 +146,11 @@ public class ThresholdSettingActivity extends BaseActivity {
             EditText ed2= (EditText) ll4.getChildAt(2);
             if(c.numericalRangeOfCharacters!=null||"".equals(c.numericalRangeOfCharacters)) {
                 String[] s = c.numericalRangeOfCharacters.split("-");
-                if (s != null)
+                if (s != null) {
                     ed1.setText(s[0]);
-                if (s != null)
+
                     ed2.setText(s[1]);
+                }
             }
                 if("VS".equals(c.observationMethod)||"MS".equals(c.observationMethod)){
 

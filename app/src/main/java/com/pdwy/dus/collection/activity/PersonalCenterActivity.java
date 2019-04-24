@@ -119,7 +119,7 @@ public class PersonalCenterActivity extends BaseActivity{
                           Date dt= new Date();
                           Long time= dt.getTime();//这就是距离1970年1月1日0点0分0秒的毫秒数
 
-                          File dbFile = new File(Environment.getDataDirectory().getAbsolutePath()+"/data/"+getPackageName()+"/databases/"+"DUS_caiji"+ SharePreferencesUtils.getString(getString(R.string.user_id),"")+".db");
+                          File dbFile = new File(Environment.getDataDirectory().getAbsolutePath()+"/data/"+getPackageName()+"/databases/"+"DUS_caiji"+ SharePreferencesUtils.getString(getString(R.string.user_name),"")+".db");
                           FileInputStream fis = null;
                           FileOutputStream fos = null;
                           try {

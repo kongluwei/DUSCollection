@@ -9,8 +9,9 @@ import java.util.List;
 
 public class TaskBean {
 
+
     /**
-     * data : [{"id":98515,"testCode":"20182000265A","blockCode":"BA1A1"},{"id":99759,"testCode":"20182000265B","blockCode":"BA2A1"},{"id":99760,"testCode":"20182000265C","blockCode":"BA3A1"}]
+     * data : [{"id":2182,"varietyType":1,"beforeCycleId":0,"testCode":"20192000152A","blockCode":"AA1A6"},{"id":2183,"varietyType":2,"beforeCycleId":0,"testCode":"20192000152B","blockCode":"AA5A6","fallBlockCode":"20192000152B111AA5A6"},{"id":2184,"varietyType":1,"beforeCycleId":0,"testCode":"20195000110A"},{"id":2185,"varietyType":2,"beforeCycleId":0,"testCode":"20195000110B"}]
      * code : 0
      * msg : 成功
      */
@@ -45,14 +46,20 @@ public class TaskBean {
 
     public static class DataBean {
         /**
-         * id : 98515
-         * testCode : 20182000265A
-         * blockCode : BA1A1
+         * id : 2182
+         * varietyType : 1
+         * beforeCycleId : 0
+         * testCode : 20192000152A
+         * blockCode : AA1A6
+         * fallBlockCode : 20192000152B111AA5A6
          */
 
         private int id;
+        private int varietyType;
+        private int beforeCycleId;
         private String testCode;
         private String blockCode;
+        private String fallBlockCode;
 
         public int getId() {
             return id;
@@ -60,6 +67,22 @@ public class TaskBean {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public int getVarietyType() {
+            return varietyType;
+        }
+
+        public void setVarietyType(int varietyType) {
+            this.varietyType = varietyType;
+        }
+
+        public int getBeforeCycleId() {
+            return beforeCycleId;
+        }
+
+        public void setBeforeCycleId(int beforeCycleId) {
+            this.beforeCycleId = beforeCycleId;
         }
 
         public String getTestCode() {
@@ -76,6 +99,14 @@ public class TaskBean {
 
         public void setBlockCode(String blockCode) {
             this.blockCode = blockCode;
+        }
+
+        public String getFallBlockCode() {
+            return fallBlockCode;
+        }
+
+        public void setFallBlockCode(String fallBlockCode) {
+            this.fallBlockCode = fallBlockCode;
         }
     }
 }

@@ -73,6 +73,7 @@ public class CrashActivity extends BaseActivity {
          mbmc=inputData.getTemplate(syrwbh);
 
           MLog.e(syrwbh);
+          //获取 生育期list
         List<String> sortcharcodeList=inputData.getContainGrowthPeriod(inputData.getGroupId(syrwbh));
         //去重
         sortcharcodeList = new ArrayList<>(new HashSet<>(sortcharcodeList));

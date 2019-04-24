@@ -385,6 +385,13 @@ public class DataDetailsActivity extends BaseActivity{
             }else{
                 holder = (ViewHolder) convertView.getTag();
             }
+            // 为空 跳过
+            if("".equals(mListData.get(position).duplicateContent1)||mListData.get(position).duplicateContent1==null){
+
+                return convertView;
+            }
+
+
             if("VS".equals(mListData.get(position).observationMethod)||"MS".equals(mListData.get(position).observationMethod)){
                   String [] duplicateContent1=mListData.get(position).duplicateContent1.split(",");
                 holder.tvData.setText(duplicateContent1[0]);

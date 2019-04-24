@@ -120,6 +120,7 @@ public class IndividualCharacterFragment extends Fragment {
                     mDataAdapter = new DataAdapter();
                     mData.setAdapter(mDataAdapter);
     }
+    // 左边listview
     class LeftAdapter extends BaseAdapter {
 
         @Override
@@ -151,6 +152,7 @@ public class IndividualCharacterFragment extends Fragment {
 
             holder.tvLeft.setText(mListData.get(position));
             final View finalConvertView = convertView;
+            //测试编号点击事件
             holder.tvLeft.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -208,6 +210,7 @@ public class IndividualCharacterFragment extends Fragment {
 
                         }
                     });
+                    //获取上一年数据
             String lastYearData= inputData.getLastYearData(mListData.get(position));
             if(lastYearData==null)
                 Toast.makeText(getActivity(),"没有找到上一年数据",Toast.LENGTH_SHORT).show();
@@ -242,6 +245,9 @@ public class IndividualCharacterFragment extends Fragment {
         }
 
         class ViewHolder {
+            /**
+             * 测试编号
+             */
             TextView tvLeft;
         }
     }

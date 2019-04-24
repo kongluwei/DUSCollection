@@ -22,6 +22,10 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    //关于android studio 启动出现Error:Execution failed for task ':app:preDebugAndroidTestBuild'. 的解决办法
+    androidTestCompile('com.android.support:support-annotations:26.1.0') {
+        force = true
+    }
     implementation 'org.xutils:xutils:3+'
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'

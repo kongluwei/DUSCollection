@@ -46,7 +46,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 采集管理
+ * 采集管理1
  * Author： by MR on 2018/8/3.
  */
 
@@ -403,7 +403,7 @@ public class CollectionManagementActivity extends BaseActivity {
 
     }
 
-    private void baocun(int iiiiii) {
+    private void baocun(int baocun) {
         try {
             if(tv_leibei_p==null)
                 return;
@@ -468,6 +468,7 @@ public class CollectionManagementActivity extends BaseActivity {
                         }
 
                         qunTiBean1.bcnr=bcnr;
+                        if(!"".equals(bcnr))
                         list3.add(qunTiBean1);
                     }
 
@@ -532,6 +533,7 @@ public class CollectionManagementActivity extends BaseActivity {
                         EditText edd = (EditText) lll.getChildAt(38);
                         bcnr=bcnr+edd.getText()+";-";
                         qunTiBean1.bcnr=bcnr;
+                        if(bcnr.length()>40)
                         list2.add(qunTiBean1);
                     }
 
@@ -543,10 +545,10 @@ public class CollectionManagementActivity extends BaseActivity {
 
                     break;
             }
-            if(iiiiii==1) {
+            if(baocun==1) {
                 Toast.makeText(CollectionManagementActivity.this, "保存完成", Toast.LENGTH_SHORT).show();
             }
-            else if(iiiiii==0)
+            else if(baocun==0)
                 Toast.makeText(CollectionManagementActivity.this, "自动保存", Toast.LENGTH_SHORT).show();
 
         }catch (Exception e){

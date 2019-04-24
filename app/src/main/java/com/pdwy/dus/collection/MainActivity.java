@@ -130,25 +130,26 @@ public class MainActivity extends BaseActivity {
         int hasReadExternalStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.READ_PHONE_STATE);
         Log.e("READ_PHONE_STATE", hasReadExternalStoragePermission + "***");
         if (hasReadExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
+//            //获取设备唯一标识码】
+//            TelephonyManager telManager = (TelephonyManager) this
+//                    .getSystemService(Context.TELEPHONY_SERVICE);
+//
+//            String imei = telManager.getDeviceId();
+//            MLog.e("IMEI============="+imei);
+//            if ("864761020069136".equals(imei)) {
+//                MLog.e("已注册设备");
+//            } else {
+//                MLog.e("否");
+//            }
+//            String md5IEMI=MD5.md5(imei);
+//            MLog.e("md5IEMI============="+md5IEMI);
+//            MLog.e("UserId======"+SharePreferencesUtils.getString(getString(R.string.user_id), "没有"));
 
         } else {
             //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
         }
 
-        //获取设备唯一标识码】
-        TelephonyManager telManager = (TelephonyManager) this
-                .getSystemService(Context.TELEPHONY_SERVICE);
-
-        @SuppressLint("MissingPermission") String imei = telManager.getDeviceId();
-
-        if ("864761020069136".equals(imei)) {
-            MLog.e("已注册设备");
-        } else {
-            MLog.e("否");
-        }
-
-        MLog.e("======"+SharePreferencesUtils.getString(getString(R.string.user_id), "没有"));
 
         //判断是否登录
         if ("".equals(SharePreferencesUtils.getString(getString(R.string.user_id), ""))) {

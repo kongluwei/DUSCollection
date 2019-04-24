@@ -73,6 +73,7 @@ public class LoginActivity extends BaseActivity {
 
                     SharePreferencesUtils.putString(getString(R.string.user_id), msg.obj.toString());
                     SharePreferencesUtils.putString(getString(R.string.user_name),user_name.getText().toString());
+                    SharePreferencesUtils.putString(getString(R.string.user_pwd),user_pwd.getText().toString());
 
                     SharePreferencesUtils.putString(getString(R.string.login_time), mYear+"年"+mMonth+"月"+mDay);
                     Date dt = new Date();
@@ -156,8 +157,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreateAfter() {
-        user_name.setText("liull");
-        user_pwd.setText("12345678");
+        user_name.setText(SharePreferencesUtils.getString(getString(R.string.user_name),""));
+        user_pwd.setText(SharePreferencesUtils.getString(getString(R.string.user_pwd),""));
         loginHttp = new LoginHttp(this, handler);
 
         MLog.e("======" + SharePreferencesUtils.getString(getString(R.string.user_id), "没有"));
@@ -177,7 +178,7 @@ switch (v.getId()) {
         break;
     case R.id.img_logo:
         final EditText inputServer = new EditText(LoginActivity.this);
-        inputServer.setText(SharePreferencesUtils.getString("dizi", "http://192.168.3.127:8080/tester"));
+        inputServer.setText(SharePreferencesUtils.getString("dizi", "http://192.168.20.20:8080/tester"));
         final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("设置请求地址：").setIcon(R.mipmap.logo).setView(inputServer)
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
