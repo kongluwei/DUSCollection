@@ -211,7 +211,7 @@ public class IndividualCharacterFragment extends Fragment {
                         }
                     });
                     //获取上一年数据
-            String lastYearData= inputData.getLastYearData(mListData.get(position));
+            String lastYearData= inputData.getLastYearData(mListData.get(position),getArguments().getString("xz"));
             if(lastYearData==null)
                 Toast.makeText(getActivity(),"没有找到上一年数据",Toast.LENGTH_SHORT).show();
                     String lastYear[] = new String[0];
@@ -235,7 +235,7 @@ public class IndividualCharacterFragment extends Fragment {
                         View view44 =  LinearLayout.inflate(getActivity(), R.layout.item_item_ll_sc_synsj2, null);
                         TextView text44=view44.findViewById(R.id.ed_item_item_ll_sc_synsj);
                         if(lastYearData!=null)
-                            text44.setText(lastYear[i]);
+                            text44.setText((lastYear[i].equals("0"))?"":lastYear[i]);
                         linearLayout.addView(view44);
                         ll_sc_synsj.addView(view);
                     }

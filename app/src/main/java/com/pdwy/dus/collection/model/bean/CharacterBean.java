@@ -59,4 +59,6 @@ public class CharacterBean {
     //拍摄图片名称
     public String pictureName;
 
+    //上一周期该任务的id
+    public String beforeCycleId;
 }

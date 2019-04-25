@@ -19,6 +19,7 @@ import com.pdwy.dus.collection.http.bean.TemplateBean;
 import com.pdwy.dus.collection.model.db.InputData;
 import com.pdwy.dus.collection.utils.MLog;
 import com.pdwy.dus.collection.utils.SharePreferencesUtils;
+import com.pdwy.dus.collection.utils.ToastUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -441,6 +442,7 @@ if("0".equals(growthPeriodBean.getCode())){
                                  }
                                  character.codeDescription=codeDescription;
                                  character.codeValue=codeValue;
+                                         character.beforeCycleId=String.valueOf(taskBean.getData().get(p).getBeforeCycleId());
                                  list.add(character);
                                  if(p==0) {
                                      containCharacter = containCharacter + characterBean.getData().get(t).getStdCharCode();
@@ -463,9 +465,16 @@ if("0".equals(growthPeriodBean.getCode())){
                      msg.what=5;   //标志消息的标志
                      handler.sendMessage(msg);
 
-//                     for (int i=0;i<taskBean.getData().size();i++) {
-//                         initialDataHttpBeforeCycleId(taskBean.getData().get(i).getBeforeCycleId());
-//                     }
+                     for (int i=0;i<taskBean.getData().size();i++) {
+                         try {
+                             initialDataHttpBeforeCycleId(taskBean.getData().get(i).getBeforeCycleId());
+
+                         }catch (Exception e){
+                             MLog.e("导入上一周期数据错误！===========");
+                             ToastUtil.showMessage(context,"导入上一周期数据错误！");
+                         }
+
+                                      }
                  }
 
           else {
@@ -486,8 +495,10 @@ if("0".equals(growthPeriodBean.getCode())){
     /**
      * 获取该任务上一周期性状值
      */
-    public void initialDataHttpBeforeCycleId(int beforeCycleId) {
+    public void initialDataHttpBeforeCycleId(final int beforeCycleId) {
+        MLog.e("上一周期该任务的id=========="+beforeCycleId);
         if(beforeCycleId>0){
+
             BeforeCycleId beforeCycleId1=new BeforeCycleId();
             beforeCycleId1.setBeforeCycleId(beforeCycleId);
             String uploadString =gson.toJson(beforeCycleId1);
@@ -529,13 +540,10 @@ if("0".equals(growthPeriodBean.getCode())){
                     if("0".equals(beforeCycleBeanOut.getCode())) {
                         inputData=new InputData(context);
 
-                        inputData.initialBeforeCycle(beforeCycleBeanOut);
+                        inputData.initialBeforeCycle( String.valueOf(beforeCycleId), beforeCycleBeanOut);
                     }
-                    MLog.e("模板========"+beforeCycleBeanOut.getMsg());
-//                taskBean = gson.fromJson(responses, TaskBean.class);
-//                MLog.e(taskBean.getData().get(0).getTestCode());
+                    MLog.e("上一周期数据========"+beforeCycleBeanOut.getMsg());
 
-//                initialDataHttp3(groupId);
                 }
             });
 

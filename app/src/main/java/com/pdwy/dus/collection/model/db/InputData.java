@@ -98,6 +98,7 @@ public class InputData {
             values.put("abnormal", c.abnormal);
             values.put("abnormalContent", c.abnormalContent);
             values.put("pictureName", c.pictureName);
+            values.put("beforeCycleId", c.beforeCycleId);
             db.insert("Character", null, values);
         }
 
@@ -110,10 +111,45 @@ public class InputData {
 
     }
 
-    public void initialBeforeCycle(BeforeCycleBeanOut beforeCycleBeanOut){
+    /**
+     * 写入上一周期数据
+     * @param beforeCycleId 上一周期该任务id
+     * @param beforeCycleBeanOut 上一周期数据
+     */
+    public void initialBeforeCycle(String beforeCycleId ,BeforeCycleBeanOut beforeCycleBeanOut){
+
          List<BeforeCycleBeanOut.DataBean.IndividualsBean> ListIndividualsBean=beforeCycleBeanOut.getData().getIndividuals();
 
 
+        SQLiteDatabase  db = msoh.getWritableDatabase();
+        db.beginTransaction();// 开启事务
+        Cursor c;
+        for(BeforeCycleBeanOut.DataBean.IndividualsBean b1:ListIndividualsBean) {
+
+
+            c = db.rawQuery("select * from Character where beforeCycleId=? and  characterId = ?",
+                    new String[]{beforeCycleId,b1.getCharacterstdcode()});
+
+
+
+
+               String beforeCycle= c.getString(c.getColumnIndex("beforeCycle"));
+
+            beforeCycle=b1.getVal()+",";
+            ContentValues values = new ContentValues();
+            values.put("beforeCycleId", beforeCycleId);
+            values.put("characterId", b1.getCharacterstdcode());
+                db.update("Character", values, "beforeCycle=?", new String[]{beforeCycle});
+
+
+
+
+        }
+
+
+        db.setTransactionSuccessful();
+        db.endTransaction();                                    //关闭事务
+        db.close();
     }
     //初始数据库数据 模板
     public   void initialTemplate(String varieties,String templateName,String containCharacter){
@@ -1310,20 +1346,26 @@ if(syq.equals(growthPeriod)||"全部".equals(syq)) {
         return sortcharcodeList;
     }
 
-    //获取上一年保存的数据
-    public String getLastYearData(String csbh){
+
+    /**
+     * 获取上一周期保存的数据
+     * @param csbh 测试编号
+     * @param characterName 性状名称
+     * @return 上一周期保存的数据 逗号隔开
+     */
+    public String getLastYearData(String csbh,String characterName){
         String lastYearData=null;
-        String front=csbh.substring(0,4);
-        String behind=csbh.substring(4);
-        String xin=(Integer.valueOf(front)-1)+behind;
+//        String front=csbh.substring(0,4);
+//        String behind=csbh.substring(4);
+//        String xin=(Integer.valueOf(front)-1)+behind;
         SQLiteDatabase  db = msoh.getWritableDatabase();
         if(db==null)
             return null;
         db.beginTransaction();// 开启事务
-        Cursor c = db.rawQuery("select * from Character where testNumber = ?",
-                new String[]{xin});
+        Cursor c = db.rawQuery("select * from Character where testNumber = ? and characterName = ? ",
+                new String[]{csbh,characterName});
         while (c.moveToNext()) {
-            lastYearData=c.getString(c.getColumnIndex("duplicateContent1"));
+            lastYearData=c.getString(c.getColumnIndex("beforeCycle"));
         }
         db.endTransaction();                                    //关闭事务
         db.close();
