@@ -127,28 +127,28 @@ public class MainActivity extends BaseActivity {
     protected void onCreateAfter() {
 
         //检查当前权限（若没有该权限，值为-1；若有该权限，值为0）
-        int hasReadExternalStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.READ_PHONE_STATE);
-        Log.e("READ_PHONE_STATE", hasReadExternalStoragePermission + "***");
-        if (hasReadExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
-//            //获取设备唯一标识码】
-//            TelephonyManager telManager = (TelephonyManager) this
-//                    .getSystemService(Context.TELEPHONY_SERVICE);
+//        int hasReadExternalStoragePermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.READ_PHONE_STATE);
+//        Log.e("READ_PHONE_STATE", hasReadExternalStoragePermission + "***");
+//        if (hasReadExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
+////            //获取设备唯一标识码】
+////            TelephonyManager telManager = (TelephonyManager) this
+////                    .getSystemService(Context.TELEPHONY_SERVICE);
+////
+////            String imei = telManager.getDeviceId();
+////            MLog.e("IMEI============="+imei);
+////            if ("864761020069136".equals(imei)) {
+////                MLog.e("已注册设备");
+////            } else {
+////                MLog.e("否");
+////            }
+////            String md5IEMI=MD5.md5(imei);
+////            MLog.e("md5IEMI============="+md5IEMI);
+////            MLog.e("UserId======"+SharePreferencesUtils.getString(getString(R.string.user_id), "没有"));
 //
-//            String imei = telManager.getDeviceId();
-//            MLog.e("IMEI============="+imei);
-//            if ("864761020069136".equals(imei)) {
-//                MLog.e("已注册设备");
-//            } else {
-//                MLog.e("否");
-//            }
-//            String md5IEMI=MD5.md5(imei);
-//            MLog.e("md5IEMI============="+md5IEMI);
-//            MLog.e("UserId======"+SharePreferencesUtils.getString(getString(R.string.user_id), "没有"));
-
-        } else {
-            //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
-        }
+//        } else {
+//            //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+//        }
 
 
         //判断是否登录
@@ -160,6 +160,7 @@ public class MainActivity extends BaseActivity {
             long l = Long.parseLong(SharePreferencesUtils.getString(getString(R.string.user_time), ""));
             Date dt = new Date();
             Long time = dt.getTime();
+//           //登陆是否过期
             if ("".equals(SharePreferencesUtils.getString(getString(R.string.user_id), "")) || time > l) {
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
@@ -170,15 +171,7 @@ public class MainActivity extends BaseActivity {
         }
 
 
-        //检查当前权限（若没有该权限，值为-1；若有该权限，值为0）
-        int hasReadExternalStoragePermission1 = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
-        Log.e("PERMISION_CODE", hasReadExternalStoragePermission1 + "***");
-        if (hasReadExternalStoragePermission1 == PackageManager.PERMISSION_GRANTED) {
 
-        } else {
-            //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
-        }
 
 //取消严格模式  FileProvider
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

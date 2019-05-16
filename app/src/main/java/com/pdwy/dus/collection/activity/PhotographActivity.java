@@ -1,9 +1,13 @@
 package com.pdwy.dus.collection.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -105,7 +109,16 @@ public class PhotographActivity extends BaseActivity {
             tv_paishe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getPicFromCamera(finalI);
+                    //检查当前权限（若没有该权限，值为-1；若有该权限，值为0）
+                    int hasReadExternalStoragePermission1 = ActivityCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
+                    Log.e("PERMISION_CODE", hasReadExternalStoragePermission1 + "***");
+                    if (hasReadExternalStoragePermission1 == PackageManager.PERMISSION_GRANTED) {
+                        getPicFromCamera(finalI);
+                    } else {
+                        //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
+                        ActivityCompat.requestPermissions(PhotographActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+                    }
+
                 }
             });
             TextView tv_chakan=(TextView)ll.findViewById(R.id.tv_chakan);
@@ -143,7 +156,7 @@ public class PhotographActivity extends BaseActivity {
 
 
     void getPicFromCamera(int i) {
-        //用于保存调用相机拍照后所生成的文件
+        //用于保存调用相机拍照后所生成的文件  判断是否异常
         if("1".equals(intent.getStringExtra("activityP"))) {
             tempFile = new File(Environment.getExternalStorageDirectory().getPath() + "/DUS", tv_csbh.getText().toString() + list.get(i) + "（异常）.jpg");
         }

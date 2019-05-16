@@ -1,7 +1,11 @@
 package com.pdwy.dus.collection.activity;
 
+import android.Manifest;
 import android.animation.TimeAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -84,7 +88,16 @@ public class QRCodeManualActivity extends BaseActivity{
             }
                 break;
             case R.id.ll__qr_code_number:
-                startActivityForResult(new Intent(this,QRCodeActivity.class), 1);
+                //检查当前权限（若没有该权限，值为-1；若有该权限，值为0）
+                int hasReadExternalStoragePermission1 = ActivityCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA);
+                Log.e("PERMISION_CODE", hasReadExternalStoragePermission1 + "***");
+                if (hasReadExternalStoragePermission1 == PackageManager.PERMISSION_GRANTED) {
+                    startActivityForResult(new Intent(this,QRCodeActivity.class), 1);
+                } else {
+                    //若没有授权，会弹出一个对话框（这个对话框是系统的，开发者不能自己定制），用户选择是否授权应用使用系统权限
+                    ActivityCompat.requestPermissions(QRCodeManualActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+                }
+
                 break;
 
         }

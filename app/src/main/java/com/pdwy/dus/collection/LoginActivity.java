@@ -79,13 +79,13 @@ public class LoginActivity extends BaseActivity {
                     Date dt = new Date();
                     Long time = dt.getTime();
                     if (Radio1.isChecked())
-                        time = time + 3600 * 24 * 30 * 3;
+                        time = time + (long)3600 * (long)24 * (long)30 * (long)3;
                     if (Radio2.isChecked())
-                        time = time + 3600 * 24 * 30 * 3 * 2;
+                        time = time + (long)3600 * (long)24 * (long)30 * (long)3 * (long)2;
                     if (Radio3.isChecked())
-                        time = time + 3600 * 24 * 30 * 3 * 4;
+                        time = time + (long)3600 * (long)24 * (long)30 * (long)3 * (long)4;
                     if (Radio4.isChecked())
-                        time = time + 3600 * 24 * 30 * 3 * 4 * 20;
+                        time = time + (long)3600000 * (long)24 * (long)30 * (long)3 * (long)4 * (long)20;
                     SharePreferencesUtils.putString(getString(R.string.user_time), time.toString());
 
                     showLoadingDialog("导入数据中");
