@@ -51,7 +51,12 @@ public class ThresholdManagementActivity extends BaseActivity {
         ll_head_dus.setVisibility(View.GONE);
         ll_head_personalcenter.setVisibility(View.INVISIBLE);
         tv_head_title.setVisibility(View.VISIBLE);
-        tv_head_title.setText("阈值管理");
+
+        if("1".equals(getIntent().getStringExtra("activityP")))
+            tv_head_title.setText("阈值管理");
+        else
+            tv_head_title.setText("关联性状管理");
+
         mEtSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -78,8 +83,14 @@ public class ThresholdManagementActivity extends BaseActivity {
         lv_yuzhi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent =new Intent(ThresholdManagementActivity.this,ThresholdSettingActivity.class);
-                intent.putExtra("moban",list.get(position));
+                Intent intent;
+                if("1".equals(getIntent().getStringExtra("activityP")))
+                    //设置阈值
+                 intent =new Intent(ThresholdManagementActivity.this,ThresholdSettingActivity.class);
+               else
+                   // 设置关联性状
+                   intent =new Intent(ThresholdManagementActivity.this,RelationCharacterActivity.class);
+                intent.putExtra("banben",list.get(position));
                 startActivity(intent);
             }
         });
