@@ -1,6 +1,8 @@
 package com.pdwy.dus.collection.activity;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -49,6 +51,23 @@ public class CrashActivity extends BaseActivity {
     ArrayList<String> tjbhList;
     InputData inputData;
     String mbmc;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {      //判断标志位
+
+                case 1: // 加载完成1
+
+                    ll_xzsyq_syq.addView((LinearLayout)msg.obj);
+
+                    break;
+
+            }
+        }
+    };
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_crash;
@@ -74,22 +93,26 @@ public class CrashActivity extends BaseActivity {
 
           MLog.e(syrwbh);
           //获取 生育期list
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
         List<String> sortcharcodeList=inputData.getContainGrowthPeriod(inputData.getGroupId(syrwbh));
         //去重
         sortcharcodeList = new ArrayList<>(new HashSet<>(sortcharcodeList));
         for (int i=0;i<sortcharcodeList.size();i++) {
 
-            LinearLayout linearLayout = (LinearLayout) LinearLayout.inflate(this, R.layout.activity_crash_ll_item, null);
+            LinearLayout linearLayout = (LinearLayout) LinearLayout.inflate(CrashActivity.this, R.layout.activity_crash_ll_item, null);
             TextView tv=(TextView)linearLayout.findViewById(R.id.tv_xzmc);
             tv.setText(sortcharcodeList.get(i));
             ArrayList<String> list=inputData.getCharacterList(mbmc,sortcharcodeList.get(i),gcfs);
             MLog.e(mbmc+"====="+list.size());
             for (String xzmc:list) {
-                LinearLayout linearLayout2 = (LinearLayout) LinearLayout.inflate(this, R.layout.activity_crash_ll_item_item, null);
+                LinearLayout linearLayout2 = (LinearLayout) LinearLayout.inflate(CrashActivity.this, R.layout.activity_crash_ll_item_item, null);
                 final CheckBox cb2=(CheckBox)linearLayout2.findViewById(R.id.cb_xzmc);
                 TextView tv2=(TextView)linearLayout2.findViewById(R.id.tv_xzmc);
-
-                tv2.setText(xzmc);
+                String relationName=inputData.getRelationName(mbmc,xzmc);
+                tv2.setText("".equals(relationName)?xzmc:xzmc+"(*"+ relationName+")");
                 tv2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -102,8 +125,17 @@ public class CrashActivity extends BaseActivity {
                 });
                 linearLayout.addView(linearLayout2);
             }
-            ll_xzsyq_syq.addView(linearLayout);
+            Message msg = new Message();
+            msg.obj = linearLayout;
+            msg.arg1=i;
+            msg.what = 1; //加载完成2
+            handler.sendMessage(msg);
         }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @OnClick({R.id.tv_queren})
@@ -122,9 +154,14 @@ public class CrashActivity extends BaseActivity {
                         TextView tv=(TextView)ll2.findViewById(R.id.tv_xzmc);
                         MLog.e(tv.getText().toString());
 
-                        if(cb_xzmc.isChecked())
-                        listXzmc.add(tv.getText().toString());
+                        if(cb_xzmc.isChecked()){
+                            if(tv.getText().toString().indexOf("(*")>0)
 
+                        listXzmc.add(tv.getText().toString().substring(0,tv.getText().toString().indexOf("(*")));
+                            else
+                                listXzmc.add(tv.getText().toString());
+
+                        }
                     }
                 }
 //                CharacterThresholdBean characterThresholdBean=new CharacterThresholdBean();

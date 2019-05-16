@@ -65,7 +65,7 @@ public class PersonalCenterActivity extends BaseActivity{
     }
     @OnClick({R.id.tv_personal_out,R.id.ll_personal_functional_introduction,
     R.id.ll_personal_data_update,R.id.ll_personal_threshold_management,
-            R.id.ll_personal_version_information,R.id.ll_personal_password_modification,
+            R.id.ll_personal_version_information,R.id.ll_personal_relation_haracter,
             R.id.iv_personal_head_portrait
     })
     //导航栏点击事件
@@ -151,11 +151,7 @@ public class PersonalCenterActivity extends BaseActivity{
                               Uri data = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/copy"+time+".db"));
                               sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));
                           }
-//                          ---------------------
-//                                  作者：huang小qing
-//                          来源：CSDN
-//                          原文：https://blog.csdn.net/gary__123456/article/details/72453372
-//                          版权声明：本文为博主原创文章，转载请附上博文链接！
+
 
 
                       }
@@ -166,16 +162,21 @@ public class PersonalCenterActivity extends BaseActivity{
                   break;
               //阈值管理
               case R.id.ll_personal_threshold_management:
-                  startActivity(new Intent(this,ThresholdManagementActivity.class));
+                  Intent intent1=new Intent(this,ThresholdManagementActivity.class);
+                  intent1.putExtra("activityP","1");
+                  startActivity(intent1);
                   break;
               //版本信息
               case R.id.ll_personal_version_information:
 //                  Toast.makeText(this,"已是最新版本",Toast.LENGTH_SHORT).show();
                   startActivity(new Intent(this,VersionInformationActivity.class));
                   break;
-              //密码设置
-              case R.id.ll_personal_password_modification:
-                  startActivity(new Intent(this, PasswordActivity.class));
+              //关联性状设置
+              case R.id.ll_personal_relation_haracter:
+                  Intent intent2=new Intent(this,ThresholdManagementActivity.class);
+                  intent2.putExtra("activityP","2");
+                  startActivity(intent2);
+
                   break;
               //头像
               case R.id.iv_personal_head_portrait:
@@ -184,9 +185,5 @@ public class PersonalCenterActivity extends BaseActivity{
           }
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        startActivity(new Intent(this, MainActivity.class));
-//        finish();
-//    }
+
 }

@@ -95,45 +95,7 @@
     android:layout_width="match_parent"
     android:layout_height="40dp"/>
 
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/ll_personal_password_modification"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal"
-            android:paddingBottom="11dp"
-            android:paddingLeft="200dp"
-            android:paddingRight="200dp"
-            android:paddingTop="11dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="密码设置"
-                android:textSize="25dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@mipmap/ic_launcher"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_marginLeft="200dp"
-            android:layout_marginRight="200dp"
-            android:background="#dddddd"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"/>
 
         <LinearLayout
             android:id="@+id/ll_personal_version_information"
@@ -287,6 +249,49 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="功能介绍"
+                android:textSize="25dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@mipmap/ic_launcher"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <View
+
+            android:layout_marginLeft="200dp"
+            android:layout_marginRight="200dp"
+            android:background="#dddddd"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+        <LinearLayout
+
+            android:id="@+id/ll_personal_relation_haracter"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:paddingBottom="11dp"
+            android:paddingLeft="200dp"
+            android:paddingRight="200dp"
+            android:paddingTop="11dp">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="2dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/user_icon03" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="关联性状设置"
                 android:textSize="25dp" />
 
             <ImageView

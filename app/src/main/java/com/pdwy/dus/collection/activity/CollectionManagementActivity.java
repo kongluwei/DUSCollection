@@ -281,7 +281,10 @@ public class CollectionManagementActivity extends BaseActivity {
                                 final String[] data;
                                 data = new String[listCharacterThresholdBean1.size()];
                                 for (int i = 0; i < listCharacterThresholdBean1.size(); i++) {
-                                    data[i] = listCharacterThresholdBean1.get(i).characterName;
+                                    String relationName=inputData.getRelationName(inputData.getMoBan(getIntent().getStringExtra("syrwbh")).get(0),listCharacterThresholdBean1.get(i).characterName);
+                                    relationName="".equals(relationName)?listCharacterThresholdBean1.get(i).characterName:listCharacterThresholdBean1.get(i).characterName+"(*"+ relationName+")";
+
+                                    data[i] = relationName;
                                 }
 
                                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -295,6 +298,11 @@ public class CollectionManagementActivity extends BaseActivity {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         baocun(0);
+                                        if(data[position].indexOf("(*")>0)
+
+
+                                        tv_xz.setText("性状:"+data[position].substring(0,data[position].indexOf("(*")));
+                                          else
                                         tv_xz.setText("性状:"+data[position]);
                                         popupWindowUtils.dismiss();
                                         EventBus.getDefault().post(new MessageEvent(getIntent().getStringExtra("mbmc"),tv_xz.getText().toString()));

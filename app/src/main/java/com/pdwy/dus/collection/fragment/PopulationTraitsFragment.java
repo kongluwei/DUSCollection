@@ -23,6 +23,7 @@ import com.pdwy.dus.collection.model.bean.CharacterBean;
 import com.pdwy.dus.collection.model.db.InputData;
 import com.pdwy.dus.collection.utils.MLog;
 import com.pdwy.dus.collection.utils.PopupWindowUtils;
+import com.pdwy.dus.collection.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,11 @@ public class PopulationTraitsFragment extends Fragment {
     }
     private void initView(View v){
         listCharacterThresholdBeanCharacterName= getArguments().getStringArrayList("listCharacterThresholdBeanCharacterName");
+        if(listCharacterThresholdBeanCharacterName.size()<1){
+            ToastUtil.showMessage(getActivity(),"未知错误！");
+            return;
+        }
+
         LinearLayout lin_year_title= v.findViewById(R.id.lin_year_title);
 
         for(int i=0;i<listCharacterThresholdBeanCharacterName.size();i++) {
@@ -101,6 +107,10 @@ public class PopulationTraitsFragment extends Fragment {
         mHeaderHorizontal.setScrollView(mDataHorizontal);
 
         mListData = getArguments().getStringArrayList("listCharacterThresholdBeanTestNumberlist");
+        if(mListData.size()<1) {
+            ToastUtil.showMessage(getActivity(),"未知错误！");
+            return;
+        }
         mLeftAdapter= new LeftAdapter();
         mLeft.setAdapter(mLeftAdapter);
         mDataAdapter = new DataAdapter();

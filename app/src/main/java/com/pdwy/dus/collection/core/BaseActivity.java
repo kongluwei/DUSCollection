@@ -307,7 +307,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void addActivity() {
         application.addActivity_(mContext);// 调用myApplication的添加Activity方法
     }
-    //销毁当个Activity方法
+    //销毁当前Activity方法
     public void removeActivity() {
         application.removeActivity_(mContext);// 调用myApplication的销毁单个Activity方法
     }

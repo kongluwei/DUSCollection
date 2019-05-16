@@ -102,7 +102,7 @@ public class ThresholdSettingActivity extends BaseActivity {
                         characterThresholdBean.characterId=tv1.getText().toString();
                         TextView tv2= (TextView) ll.getChildAt(3);
                         characterThresholdBean.characterName=tv2.getText().toString();
-                        characterThresholdBean.template=getIntent().getStringExtra("moban");
+                        characterThresholdBean.template=getIntent().getStringExtra("banben");
                         TextView tv3= (TextView) ll.getChildAt(5);
                         characterThresholdBean.observationMethod=tv3.getText().toString();
                         LinearLayout ll4= (LinearLayout) ll.getChildAt(7);
@@ -130,7 +130,7 @@ public class ThresholdSettingActivity extends BaseActivity {
             public void run() {
                 try {
 
-        ArrayList<CharacterThresholdBean> list=inputData.getCharacterThresholdBeanList(getIntent().getStringExtra("moban"));
+        ArrayList<CharacterThresholdBean> list=inputData.getCharacterThresholdBeanList(getIntent().getStringExtra("banben"));
         for(CharacterThresholdBean c:list) {
 //            if("VS".equals(c.observationMethod)||"GS".equals(c.observationMethod)) {
                 LinearLayout l1 = (LinearLayout) getLayoutInflater().inflate(R.layout.item_sc_ll_yuzhishezhi, null);

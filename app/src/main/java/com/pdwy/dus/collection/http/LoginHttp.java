@@ -132,7 +132,10 @@ public class LoginHttp {
 
                     }
                 }catch (Exception e){
-
+                    Message msg =Message.obtain();
+                    msg.obj = "登陆异常！请检查网络";
+                    msg.what=0;   //标志消息的标志
+                    handler.sendMessage(msg);
                     MLog.e("异常=============");
                 }
 

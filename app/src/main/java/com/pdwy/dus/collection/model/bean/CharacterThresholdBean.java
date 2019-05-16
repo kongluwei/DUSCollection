@@ -20,4 +20,12 @@ public class CharacterThresholdBean {
     public String numericalRangeOfCharacters;
     //是否异常
     public String abnormal;
+
+    //对应关联性状的组合id
+    public String relationId;
+    //对应关联性状的组合名称
+    public String relationName;
+
+    //对应关联性状的组合包含的性状 （逗号隔开）
+    public String characterNameList;
 }

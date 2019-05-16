@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/head_include_layout"/>
+   <ExpandableListView
+       android:id="@+id/elv_relation_character"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1">
+
+   </ExpandableListView>
+    <TextView
+        android:layout_marginBottom="30dp"
+        android:id="@+id/tv_relation_character_add"
+        android:layout_marginLeft="300dp"
+        android:layout_marginRight="300dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/shape_small_label_signin_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="新增"
+        android:textSize="35dp"
+        android:gravity="center"
+        android:textColor="#fff"
+        />
+</LinearLayout>

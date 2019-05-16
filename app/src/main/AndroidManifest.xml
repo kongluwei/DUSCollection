@@ -95,6 +95,10 @@
         <activity android:name=".activity.ThresholdSettingActivity"
             android:screenOrientation="landscape"
             />
+        <!--关联性状设置-->
+        <activity android:name=".activity.RelationCharacterActivity"
+            android:screenOrientation="landscape"
+            />
         <!--版本信息-->
         <activity android:name=".activity.VersionInformationActivity"
             android:screenOrientation="landscape"

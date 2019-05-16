@@ -228,7 +228,6 @@ public class UploadDataHttp {
                    UploadBean.GroupDataManipulationBean.AddBeanXXX addBeanXXX = new UploadBean.GroupDataManipulationBean.AddBeanXXX();
                    addBeanXXX.setCharacterstdcode(characterBean.characterId);
                    if(!"".equals(characterBean.duplicateContent1)) {
-                       MLog.e(characterBean.duplicateContent1);
                        if("异常".equals(characterBean.duplicateContent1)){
 
 

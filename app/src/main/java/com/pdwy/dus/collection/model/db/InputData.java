@@ -1405,8 +1405,8 @@ break;
         if(db==null)
             return list;
         db.beginTransaction();// 开启事务
-        Cursor c = db.rawQuery("select * from CharacterThreshold where template = ?",
-                new String[]{s});
+        Cursor c = db.rawQuery("select * from CharacterThreshold where template = ? and  observationMethod like ? ",
+                new String[]{s,"_S"});
 //        Cursor c =db.query("CharacterThreshold", null, null, null, null, null, null);
         MLog.e("------==="+c.getCount());
         list=new ArrayList<>();
@@ -1419,6 +1419,7 @@ break;
             characterThresholdBean.template=c.getString(c.getColumnIndex("template"));
             characterThresholdBean.observationMethod=c.getString(c.getColumnIndex("observationMethod"));
             characterThresholdBean.numericalRangeOfCharacters=c.getString(c.getColumnIndex("numericalRangeOfCharacters"));
+            characterThresholdBean.relationId=c.getString(c.getColumnIndex("relationId"));
 
             list.add(characterThresholdBean);
 //            Log.e("db.String","----"+s);
@@ -1432,6 +1433,172 @@ break;
 
     }
 
+    /**
+     * 写入关联性状的数据
+     * @param listS 数据
+     * @param relationName 名称
+     * @return 判断是否存在 0不存在  1存在
+     */
+    public int setRelationCharacter(List<CharacterThresholdBean> listS,String relationName,String template){
+        SQLiteDatabase  db = msoh.getWritableDatabase();
+
+
+        db.beginTransaction();// 开启事务
+        Cursor c = db.rawQuery("select * from RelationCharacter where relationName =? ",
+                new String[]{relationName});
+       int relationIdCount= c.getCount();
+       // 名称已存在
+ if(relationIdCount>0) {
+     db.endTransaction();
+     db.close();
+     return relationIdCount;
+ }
+         c = db.rawQuery("select * from RelationCharacter",
+                new String[]{});
+        relationIdCount= c.getCount();
+
+            ContentValues values = new ContentValues();
+            values.put("relationId", relationIdCount);
+            values.put("relationName", relationName);
+            db.insert("RelationCharacter", null, values);
+
+            for(CharacterThresholdBean characterThresholdBean:listS) {
+                ContentValues values1 = new ContentValues();
+                values1.put("relationId", relationIdCount);
+
+                db.update("CharacterThreshold", values1, "characterId = ? and template = ?", new String[]{characterThresholdBean.characterId,template});
+
+            }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return  0;
+    }
+
+
+    /**
+     * 获取保存的关联性状信息
+     * @param template 版本名称
+     * @return 性状
+     */
+    public List<CharacterThresholdBean> getRelationCharacter(String template){
+        ArrayList<CharacterThresholdBean> list=null;
+        SQLiteDatabase  db = msoh.getWritableDatabase();
+        MLog.e("------==="+template);
+        if(db==null)
+            return list;
+        db.beginTransaction();// 开启事务
+        Cursor c = db.rawQuery("select * from RelationCharacter",
+                new String[]{});
+        MLog.e("------==="+c.getCount());
+        list = new ArrayList<>();
+        while (c.moveToNext()) {
+            CharacterThresholdBean characterThresholdBean = new CharacterThresholdBean();
+            characterThresholdBean.relationId = c.getString(c.getColumnIndex("relationId"));
+            characterThresholdBean.relationName = c.getString(c.getColumnIndex("relationName"));
+
+            Cursor c2 = db.rawQuery("select * from CharacterThreshold where template = ? and relationId = ? and observationMethod = ? ",
+                    new String[]{template, characterThresholdBean.relationId,"MS"});
+
+
+            while (c2.moveToNext()) {
+                if(characterThresholdBean.characterNameList!=null)
+                characterThresholdBean.characterNameList= characterThresholdBean.characterNameList+"; "+c2.getString(c2.getColumnIndex("characterName"));
+else
+                    characterThresholdBean.characterNameList=c2.getString(c2.getColumnIndex("characterName"));
+
+//            Log.e("db.String","----"+s);
+            }
+            list.add(characterThresholdBean);
+        }
+        db.endTransaction();                                    //关闭事务
+        db.close();
+
+        return list;
+
+    }
+    /**
+     * 获取保存的关联名称
+     * @param template 版本名称
+     * @param      xz 性状
+     * @return 关联性状的组合名称
+     */
+    public String  getRelationName(String template,String xz){
+        String relationName ="";
+        SQLiteDatabase  db = msoh.getWritableDatabase();
+
+        if(db==null)
+            return relationName;
+        db.beginTransaction();// 开启事务
+        Cursor c = db.rawQuery("select * from CharacterThreshold where template = ?  and characterName = ?",
+                new String[]{template,xz});
+
+        String relationId = "";
+        while (c.moveToNext()) {
+
+            relationId=c.getString(c.getColumnIndex("relationId"));
+
+          break;
+
+
+        }
+
+        if(relationId!=null) {
+            Cursor c2 = db.rawQuery("select * from RelationCharacter where relationId = ?",
+                    new String[]{relationId});
+
+
+            while (c2.moveToNext()) {
+
+                relationName = c2.getString(c2.getColumnIndex("relationName"));
+
+                break;
+
+
+            }
+        }
+        db.endTransaction();                                    //关闭事务
+        db.close();
+
+
+        return relationName;
+
+
+
+
+
+    }
+
+    /**
+     * 删除关联性状信息
+     * @param characterThresholdBean
+     * @param template
+     */
+    public void deleteRelationCharacter(CharacterThresholdBean characterThresholdBean,String template){
+
+            SQLiteDatabase  db = msoh.getWritableDatabase();
+            db.beginTransaction();// 开启事务
+            db.delete("RelationCharacter", "relationId = ?", new String[]{characterThresholdBean.relationId});
+
+
+
+            ContentValues values1 = new ContentValues();
+            values1.put("relationId", "");
+
+            db.update("CharacterThreshold", values1, "relationId = ? and template = ?", new String[]{characterThresholdBean.relationId,template});
+
+
+
+            db.setTransactionSuccessful();
+            db.endTransaction();                                    //关闭事务
+            db.close();
+
+
+
+
+
+    }
     //获取有异常性状的list
     public ArrayList<CharacterBean> getCharacterBeanList(String pz,String syrwbh,String mbmc,String syq){
         ArrayList<CharacterBean> list=new ArrayList<>();
@@ -1440,11 +1607,11 @@ break;
         db.beginTransaction();// 开启事务
         Cursor c;
         if(syq==null||"".equals(syq))
-             c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =?",
-                    new String[]{pz,syrwbh,mbmc});
+             c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =?  and abnormal = ?",
+                    new String[]{pz,syrwbh,mbmc,"1"});
             else
-        c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =? and growthPeriod = ?",
-                new String[]{pz,syrwbh,mbmc,syq});
+        c = db.rawQuery("select * from Character where varieties = ? and experimentalNumber = ? and template =? and growthPeriod = ?  and abnormal = ?",
+                new String[]{pz,syrwbh,mbmc,syq,"1"});
         while (c.moveToNext()) {
             CharacterBean characterBean = new CharacterBean();
             characterBean.characterId=c.getString(c.getColumnIndex("characterId"));

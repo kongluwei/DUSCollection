@@ -44,9 +44,8 @@ public class DataDetailsActivity extends BaseActivity{
 
                 case 1: // 数据加载完成
                     dismissLoadingDialog();
-                    mLeft.setAdapter(mLeftAdapter);
-
-                    mData.setAdapter(mDataAdapter);
+                    mLeftAdapter.notifyDataSetChanged();
+                    mDataAdapter.notifyDataSetChanged();
 
                     break;
                 case 2: //上传回调
@@ -188,18 +187,28 @@ public class DataDetailsActivity extends BaseActivity{
 
         mLeftAdapter= new LeftAdapter();
         mDataAdapter = new DataAdapter();
+        mListData=new ArrayList<>();
+        mLeft.setAdapter(mLeftAdapter);
+
+        mData.setAdapter(mDataAdapter);
         // 加载品种
         showLoadingDialog("",false);
-        new Thread(new Runnable() {
+         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(100);
-                    mListData= inputData.getCharacterBeanList(getIntent().getStringExtra("groupId"),getIntent().getStringExtra("varietyId"));
+                    ArrayList<CharacterBean>   mListData1= inputData.getCharacterBeanList(getIntent().getStringExtra("groupId"),getIntent().getStringExtra("varietyId"));
 
-                    Message msg=new Message();
-                    msg.what=1; //品种加载完成
-                    handler.sendMessage(msg);
+                    for(int i=0;i<mListData1.size();i++) {
+                        mListData.add(mListData1.get(i));
+
+                        Message msg = new Message();
+                        msg.what = 1; //品种加载完成
+                        handler.sendMessage(msg);
+
+
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

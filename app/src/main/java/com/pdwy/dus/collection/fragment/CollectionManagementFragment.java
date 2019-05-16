@@ -207,7 +207,9 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
                 ArrayList<CharacterThresholdBean> listCharacterThresholdBean =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
                 data = new String[xzList.size()];
                 for(int i=0;i<xzList.size();i++){
-                    data[i]=xzList.get(i);
+                    String relationName=inputData.getRelationName(inputData.getMoBan(tv_syrwbh.getText().toString()).get(0),xzList.get(i));
+                    relationName="".equals(relationName)?xzList.get(i):xzList.get(i)+"(*"+ relationName+")";
+                    data[i]=relationName;
                 }
 
                 break;
@@ -442,13 +444,9 @@ public class CollectionManagementFragment extends BaseFragment implements View.O
                           integer.putExtra("syq",tv_syq.getText().toString());
                           integer.putExtra("xz",tv_xz.getText().toString());
                           integer.putExtra("cfs",tv_cfs.getText().toString());
-                          ArrayList<CharacterThresholdBean> listCharacterThresholdBean =inputData.getCharacterThresholdBeanlist(tv_pop.getText().toString(),tv_syrwbh.getText().toString(),tv_mbmc.getText().toString(),tv_syq.getText().toString(),1,null);
-                          ArrayList<String> listXzmc=new ArrayList<>() ;
-                          for(int i=0;i<listCharacterThresholdBean.size();i++){
-                              listXzmc.add(listCharacterThresholdBean.get(i).characterName);
-                          }
+
                           integer.putStringArrayListExtra("listXzmc", (ArrayList<String>) xzList);
-startActivity(integer);
+                          startActivity(integer);
 //                          waitDialog.dismiss();
                           break;
                       case R.id.ll_shouye:
@@ -467,8 +465,10 @@ startActivity(integer);
     void setTextViewText(View v,String[] data,int p){
         LinearLayout ll1= (LinearLayout)v;
         TextView tv1= (TextView) ll1.getChildAt(0);
-        tv1.setText(data[p]);
-
+        if(data[p].indexOf("(*")>0)
+        tv1.setText(data[p].substring(0,data[p].indexOf("(*")));
+else
+            tv1.setText(data[p]);
     }
 
     @Override
